@@ -41,17 +41,32 @@ void handleEvents(sf::RenderWindow &window, std::vector<Obiekt*> &tablicaObiektó
 				generujObiekt(&tablicaObiektów);
 				break;
 			case sf::Keyboard::Delete:
-				usunObiekt(&tablicaObiektów);
+				usunPierwszyObiekt(&tablicaObiektów);
 				break;
 			default:
 				break;
 			}
 			break;
 		case sf::Event::MouseButtonPressed:
-			if (event.mouseButton.button == sf::Mouse::Left)
+			switch (event.mouseButton.button)
+			{
+			case sf::Mouse::Left:
 				narysujObiekt(&window, &tablicaObiektów);
+				break;
+			case sf::Mouse::Right:
+				usunObiektKursor(&window, &tablicaObiektów);
+				break;
+			}
 		default:
 			break;
 		}
 	}
+}
+
+
+
+int odl2(sf::Vector2i a, sf::Vector2i b)
+{
+	sf::Vector2i c = b - a;
+	return sqrt(c.x*c.x + c.y*c.y);
 }

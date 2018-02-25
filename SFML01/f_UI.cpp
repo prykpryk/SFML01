@@ -41,7 +41,7 @@ void narysujObiekt(sf::RenderWindow *window, std::vector<Obiekt*> *tablicaObiekt
 		std::cout << "Narysowano obiekt w adresie: " << ptr << " o predkosci " << prêdkoœæ.x << " " << prêdkoœæ.y << "\n";
 }
 
-void usunObiekt(std::vector<Obiekt*> *tablicaObiektów)
+void usunPierwszyObiekt(std::vector<Obiekt*> *tablicaObiektów)
 {
 	auto it = tablicaObiektów->begin();
 	//std::cout << *it << "\n";
@@ -53,4 +53,26 @@ void usunObiekt(std::vector<Obiekt*> *tablicaObiektów)
 	}
 	else
 		std::cout << "Nie ma nic do usuniecia.\n";
+}
+
+void usunObiektKursor(sf::RenderWindow *window, std::vector<Obiekt*> *tablicaObiektów)
+{
+	sf::Vector2i pocz¹tek = sf::Mouse::getPosition(*window);
+
+	Obiekt *wskazany = nullptr;
+
+	for (Obiekt *obiekt : *tablicaObiektów)
+	{
+		sf::Vector2i pozycjaNaEkranie = window->mapCoordsToPixel(obiekt->m_circle.getPosition());
+		int odle = odl2(pocz¹tek, pozycjaNaEkranie);
+
+		if (odle <= obiekt->m_circle.getRadius())
+		{
+			wskazany = obiekt;
+			break;
+		}
+	}
+
+	delete wskazany;
+
 }

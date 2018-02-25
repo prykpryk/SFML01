@@ -67,6 +67,7 @@ public:
 	{
 		m_F = obliczSi³yGrawitacji();
 
+
 		sf::Vector2f przysp = m_F / m_masa;
 
 		m_pos.x += 0.5f * m_vel.x * czas.asSeconds();

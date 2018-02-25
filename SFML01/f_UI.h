@@ -15,4 +15,6 @@ void generujObiekt(std::vector<Obiekt*> *tablicaObiektów);
 
 void narysujObiekt(sf::RenderWindow *window, std::vector<Obiekt*> *tablicaObiektów);
 
-void usunObiekt(std::vector<Obiekt*> *tablicaObiektów);
+void usunPierwszyObiekt(std::vector<Obiekt*> *tablicaObiektów);
+
+void usunObiektKursor(sf::RenderWindow *window, std::vector<Obiekt*> *tablicaObiektów);
