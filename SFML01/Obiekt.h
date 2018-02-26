@@ -10,35 +10,39 @@ class Obiekt
 {
 protected:
 
-	sf::Vector2f m_vel;
-	sf::Vector2f m_F;
-	float m_R;
+	Vector2d m_vel;
+	Vector2d m_F;
+	double m_R;
 	std::vector<Obiekt*> *m_tablicaObiektów;
+	Color m_color;
 
 
 public:
-	sf::CircleShape m_circle;
-	sf::VertexArray m_œlad;
-	float m_masa;
-	sf::Vector2f m_pos;
+	CircleShape m_circle;
+	std::vector<Vertex> m_œlad;
+	double m_masa;
+	Vector2d m_pos;
 
-	Obiekt(std::vector<Obiekt*> *tablicaObiektów, float r, sf::Vector2f pos = { 0, 0 }, sf::Vector2f vel = { 0,0 }, float masa = 10, sf::Color color = sf::Color::White)
+	Obiekt(std::vector<Obiekt*> *tablicaObiektów, double r, Vector2d pos = { 0, 0 }, Vector2d vel = { 0,0 }, double masa = 10, Color color = Color::White)
 		: m_circle{ r / 2 * G_PIKSELI_NA_METR,16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
-		m_R{ r }, m_masa{ masa }
+		m_R{ r }, m_masa{ masa }, m_color{ color }
 	{
-		m_circle.setPosition(m_pos*G_PIKSELI_NA_METR);
+		m_circle.setPosition(static_cast<Vector2f>(m_pos*G_PIKSELI_NA_METR));
 		m_circle.setOrigin(r / 2 * G_PIKSELI_NA_METR, r / 2 * G_PIKSELI_NA_METR);
-		m_circle.setFillColor(color);
-		m_œlad.setPrimitiveType(sf::LinesStrip);
+		m_circle.setFillColor(m_color);
+		//m_œlad.setPrimitiveType(LinesStrip);
 
 		//Zarejestruj obiekt
 		tablicaObiektów->push_back(this);
+		odœwie¿Œlad();
 		tablicaŒladów.push_back(&m_œlad);
 	};
 
 	~Obiekt()
 	{
 		//Usuniêcie obiektu z tablicy obiektów
+
+		//mu_tObiektów.lock();
 		for (auto it = m_tablicaObiektów->begin(); it != m_tablicaObiektów->end(); )
 		{
 			if (*it == this)
@@ -46,22 +50,33 @@ public:
 			else
 				it++;
 		}
+		//mu_tObiektów.lock();
+
+		//mu_tŒladów.lock();
+		for (auto it = tablicaŒladów.begin(); it != tablicaŒladów.end(); )
+		{
+			if (*it == &m_œlad)
+				it = tablicaŒladów.erase(it);
+			else
+				it++;
+		}
+		//mu_tŒladów.unlock();
 	}
 
-	float odleg³oœæ(Obiekt *planeta)
+	double odleg³oœæ(Obiekt *planeta)
 	{
 		return sqrt(pow(m_pos.x - planeta->m_pos.x, 2) + pow(m_pos.y - planeta->m_pos.y, 2));
 	}
 
-	sf::Vector2f obliczSi³yGrawitacji()
+	Vector2d obliczSi³yGrawitacji()
 	{
-		sf::Vector2f sumaSi³ = { 0,0 };
+		Vector2d sumaSi³ = { 0,0 };
 		for (auto planeta : *m_tablicaObiektów)
 		{
 			if (planeta != this)
 			{
-				float wypadkowa = 5.0f * (m_masa * planeta->m_masa) / pow(odleg³oœæ(planeta), 2);
-				float alfa = atan2(planeta->m_pos.x - m_pos.x, planeta->m_pos.y - m_pos.y);
+				double wypadkowa = 5.0 * (m_masa * planeta->m_masa) / pow(odleg³oœæ(planeta), 2);
+				double alfa = atan2(planeta->m_pos.x - m_pos.x, planeta->m_pos.y - m_pos.y);
 				sumaSi³.x += wypadkowa * sin(alfa);
 				sumaSi³.y += wypadkowa * cos(alfa);
 			}
@@ -69,17 +84,17 @@ public:
 		return sumaSi³;
 	}
 
-	virtual void obliczPozycjê(sf::Time &czas)
+	virtual void obliczPozycjê(Time &czas)
 	{
 		m_F = obliczSi³yGrawitacji();
 
 
-		sf::Vector2f przysp = m_F / m_masa;
+		Vector2d przysp = m_F / m_masa;
 
 		m_pos.x += 0.5f * m_vel.x * czas.asSeconds();
 		m_pos.y += 0.5f * m_vel.y * czas.asSeconds();
 
-		m_vel += przysp * czas.asSeconds();
+		m_vel += przysp * static_cast<double>(czas.asSeconds());
 
 		m_pos.x += 0.5f * m_vel.x * czas.asSeconds();
 		m_pos.y += 0.5f * m_vel.y * czas.asSeconds();
@@ -90,7 +105,13 @@ public:
 	virtual void odœwie¿Œlad()
 	{
 		mu_tŒladów.lock();
-		m_œlad.append(sf::Vertex(m_pos*G_PIKSELI_NA_METR));
+		m_œlad.insert(m_œlad.begin(),(Vertex(static_cast<Vector2f>(m_pos*G_PIKSELI_NA_METR), m_color)));
+
+		if (m_œlad.size() > G_D£UGOŒÆ_ŒLADU)
+		{
+			m_œlad.erase(m_œlad.end() - 1);
+		}
+
 		mu_tŒladów.unlock();
 	}
 };

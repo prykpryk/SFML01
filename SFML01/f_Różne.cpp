@@ -20,52 +20,52 @@ int rand(int min, int max)
 	return min + static_cast<int>((max - min + 1) * (mersenne() * fraction));
 }
 
-void handleEvents(sf::RenderWindow &window, std::vector<Obiekt*> &tablicaObiektów)
+void handleEvents(RenderWindow &window, std::vector<Obiekt*> &tablicaObiektów)
 {
-	sf::Event event;
+	Event event;
 	while (window.pollEvent(event))
 	{
 		switch (event.type)
 		{
-		case sf::Event::Closed:		//Zamknij okno
+		case Event::Closed:		//Zamknij okno
 			window.close(); break;
-		case sf::Event::Resized:	//Zmieñ rozmiar okna
+		case Event::Resized:	//Zmieñ rozmiar okna
 			G_WINWIDTH = event.size.width;
 			G_WINHEIGHT = event.size.height;
 			std::cout << "Nowe wymiary okna: " << event.size.width << "x" << event.size.height << "\n";
 			break;
-		case sf::Event::KeyPressed:
+		case Event::KeyPressed:
 			switch (event.key.code)
 			{
-			case sf::Keyboard::Up:
-				przesuñWidokOkna(window, sf::Vector2f(0, -10));
+			case Keyboard::Up:
+				przesuñWidokOkna(window, Vector2f(0, -10));
 				break;
-			case sf::Keyboard::Down:
-				przesuñWidokOkna(window, sf::Vector2f(0, 10));
+			case Keyboard::Down:
+				przesuñWidokOkna(window, Vector2f(0, 10));
 				break;
-			case sf::Keyboard::Left:
-				przesuñWidokOkna(window, sf::Vector2f(-10, 0));
+			case Keyboard::Left:
+				przesuñWidokOkna(window, Vector2f(-10, 0));
 				break;
-			case sf::Keyboard::Right:
-				przesuñWidokOkna(window, sf::Vector2f(10, 0));
+			case Keyboard::Right:
+				przesuñWidokOkna(window, Vector2f(10, 0));
 				break;
-			case sf::Keyboard::Add:
+			case Keyboard::Add:
 				skalujWidokOkna(window, 1.2f);
 				break;
-			case sf::Keyboard::Subtract:
+			case Keyboard::Subtract:
 				skalujWidokOkna(window, 0.8f);
 				break;
 			default:
 				break;
 			}
 			break;
-		case sf::Event::MouseButtonPressed:
+		case Event::MouseButtonPressed:
 			switch (event.mouseButton.button)
 			{
-			case sf::Mouse::Left:
+			case Mouse::Left:
 				narysujObiekt(&window, &tablicaObiektów);
 				break;
-			case sf::Mouse::Right:
+			case Mouse::Right:
 				usunObiektKursor(&window, &tablicaObiektów);
 				break;
 			}
@@ -77,8 +77,8 @@ void handleEvents(sf::RenderWindow &window, std::vector<Obiekt*> &tablicaObiektó
 
 
 
-int odl2(sf::Vector2i a, sf::Vector2i b)
+int odl2(Vector2i a, Vector2i b)
 {
-	sf::Vector2i c = b - a;
+	Vector2i c = b - a;
 	return sqrt(c.x*c.x + c.y*c.y);
 }

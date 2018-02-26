@@ -13,12 +13,12 @@
 
 void generujObiekt(std::vector<Obiekt*> *tablicaObiektów);
 
-void narysujObiekt(sf::RenderWindow *window, std::vector<Obiekt*> *tablicaObiektów);
+void narysujObiekt(RenderWindow *window, std::vector<Obiekt*> *tablicaObiektów);
 
 void usunPierwszyObiekt(std::vector<Obiekt*> *tablicaObiektów);
 
-void usunObiektKursor(sf::RenderWindow *window, std::vector<Obiekt*> *tablicaObiektów);
+void usunObiektKursor(RenderWindow *window, std::vector<Obiekt*> *tablicaObiektów);
 
-void przesuñWidokOkna(sf::RenderWindow &window, sf::Vector2f a);
+void przesuñWidokOkna(RenderWindow &window, Vector2f a);
 
-void skalujWidokOkna(sf::RenderWindow &window, float a);
+void skalujWidokOkna(RenderWindow &window, float a);

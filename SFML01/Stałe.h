@@ -1,5 +1,6 @@
 #pragma once
 
-extern	const	float	G_PIKSELI_NA_METR;
-extern	const	float	G_ODBIJALNOSC;
-extern	const	float	G_PRZYSP_ZIEMSKIE;
+extern	const	double	G_PIKSELI_NA_METR;
+extern	const	double	G_ODBIJALNOSC;
+extern	const	double	G_PRZYSP_ZIEMSKIE;
+extern	const	int		G_D£UGOŒÆ_ŒLADU;
