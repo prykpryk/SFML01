@@ -39,6 +39,7 @@ public:
 		//m_œlad.setPrimitiveType(LinesStrip);
 
 		//Zarejestruj obiekt
+
 		tablicaObiektów->push_back(this);
 		odœwie¿Œlad();
 		tablicaŒladów.push_back(&m_œlad);
