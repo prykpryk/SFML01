@@ -6,36 +6,34 @@
 #include "Sta³e.h"
 #include "ZmienneGlob.h"
 
-class Obiekt
+class Planeta : public CircleShape
 {
 protected:
 
 	Vector2d m_vel;
 	Vector2d m_F;
 	double m_R;
-	std::vector<Obiekt*> *m_tablicaObiektów;
+	std::vector<Planeta*> *m_tablicaObiektów;
 	Color m_color;
 
-
 public:
-	CircleShape m_circle;
 	std::vector<Vertex> m_œlad;
 	double m_masa;
 	Vector2d m_pos;
 
-	Obiekt(
-		std::vector<Obiekt*> *tablicaObiektów, 
+	Planeta(
+		std::vector<Planeta*> *tablicaObiektów, 
 		const double r, 
 		const Vector2d pos = { 0, 0 }, 
 		const Vector2d vel = { 0,0 }, 
 		const double masa = 10, 
 		const Color color = Color::White)
-		: m_circle{ r / 2 * G_PIKSELI_NA_METR,16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
+		: CircleShape{ r / 2 * G_PIKSELI_NA_METR,16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
 		m_R{ r }, m_masa{ masa }, m_color{ color }
 	{
-		m_circle.setPosition(static_cast<Vector2f>(m_pos*G_PIKSELI_NA_METR));
-		m_circle.setOrigin(r / 2 * G_PIKSELI_NA_METR, r / 2 * G_PIKSELI_NA_METR);
-		m_circle.setFillColor(m_color);
+		setPosition(static_cast<Vector2f>(m_pos*G_PIKSELI_NA_METR));
+		setOrigin(r / 2 * G_PIKSELI_NA_METR, r / 2 * G_PIKSELI_NA_METR);
+		setFillColor(m_color);
 		//m_œlad.setPrimitiveType(LinesStrip);
 
 		//Zarejestruj obiekt
@@ -45,7 +43,7 @@ public:
 		tablicaŒladów.push_back(&m_œlad);
 	};
 
-	~Obiekt()
+	~Planeta()
 	{
 		//Usuniêcie obiektu z tablicy obiektów
 
@@ -70,7 +68,7 @@ public:
 		//mu_tŒladów.unlock();
 	}
 
-	double odleg³oœæ(const Obiekt *planeta)
+	double odleg³oœæ(const Planeta *planeta)
 	{
 		return sqrt(pow(m_pos.x - planeta->m_pos.x, 2) + pow(m_pos.y - planeta->m_pos.y, 2));
 	}
@@ -96,7 +94,7 @@ public:
 		m_F = obliczSi³yGrawitacji();
 
 
-		Vector2d przysp = m_F / m_masa;
+		Vector2d przysp = m_F / m_masa;			//Ca³kowanie przybli¿one trapezami, dok³adne przy sta³ym przyspieszeniu
 
 		m_pos.x += 0.5f * m_vel.x * czas;
 		m_pos.y += 0.5f * m_vel.y * czas;
@@ -106,7 +104,7 @@ public:
 		m_pos.x += 0.5f * m_vel.x * czas;
 		m_pos.y += 0.5f * m_vel.y * czas;
 
-		m_circle.setPosition(m_pos.x*G_PIKSELI_NA_METR, m_pos.y*G_PIKSELI_NA_METR);
+		setPosition(m_pos.x*G_PIKSELI_NA_METR, m_pos.y*G_PIKSELI_NA_METR);
 	}
 
 	virtual void odœwie¿Œlad()

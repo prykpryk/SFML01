@@ -5,13 +5,13 @@
 
 #include "Sta³e.h"
 
-#include "Obiekt.h"
+#include "Planeta.h"
 #include "PlanetaSta³a.h"
 #include "ZmienneGlob.h"
 #include "f_Ró¿ne.h"
 #include "f_UI.h"
 
-void handleEvents(RenderWindow &window, std::vector<Obiekt*> &tablicaObiektów)
+void handleEvents(RenderWindow &window, std::vector<Planeta*> &tablicaObiektów)
 {
 	Event event;
 	while (window.pollEvent(event))
@@ -77,17 +77,17 @@ void handleEvents(RenderWindow &window, std::vector<Obiekt*> &tablicaObiektów)
 }
 
 
-void generujObiekt(std::vector<Obiekt*> *tablicaObiektów)
+void generujObiekt(std::vector<Planeta*> *tablicaObiektów)
 {
 	mu_tObiektów.lock();
-	auto ptr = new Obiekt(tablicaObiektów, 1, { 0,0 }, { 0,0 }, 10, Color(rand(0, 255), rand(0, 255), rand(0, 255)));
+	auto ptr = new Planeta(tablicaObiektów, 1, { 0,0 }, { 0,0 }, 10, Color(rand(0, 255), rand(0, 255), rand(0, 255)));
 	mu_tObiektów.unlock();
 
 	if (DEBUG)
 		std::cout << "Stworzono obiekt w adresie: " << ptr << "\n";
 }
 
-void narysujObiekt(RenderWindow *window, std::vector<Obiekt*> *tablicaObiektów)
+void narysujObiekt(RenderWindow *window, std::vector<Planeta*> *tablicaObiektów)
 {
 	Vector2f pocz¹tek = window->mapPixelToCoords(Mouse::getPosition(*window));
 	while (Mouse::isButtonPressed(Mouse::Left))
@@ -100,7 +100,7 @@ void narysujObiekt(RenderWindow *window, std::vector<Obiekt*> *tablicaObiektów)
 	double œrednica = cbrt(masa);
 
 	mu_tObiektów.lock();
-	auto ptr = new Obiekt(tablicaObiektów, œrednica,
+	auto ptr = new Planeta(tablicaObiektów, œrednica,
 		static_cast<Vector2d>(pocz¹tek) / G_PIKSELI_NA_METR, static_cast<Vector2d>(prêdkoœæ) / G_PIKSELI_NA_METR,
 		masa, Color(rand(0, 255), rand(0, 255), rand(0, 255)));
 	mu_tObiektów.unlock();
@@ -109,7 +109,7 @@ void narysujObiekt(RenderWindow *window, std::vector<Obiekt*> *tablicaObiektów)
 		std::cout << "Narysowano obiekt w adresie: " << ptr << " o predkosci " << prêdkoœæ.x << " " << prêdkoœæ.y << "\n";
 }
 
-void usunPierwszyObiekt(std::vector<Obiekt*> *tablicaObiektów)
+void usunPierwszyObiekt(std::vector<Planeta*> *tablicaObiektów)
 {
 	auto it = tablicaObiektów->begin();
 	//std::cout << *it << "\n";
@@ -123,18 +123,18 @@ void usunPierwszyObiekt(std::vector<Obiekt*> *tablicaObiektów)
 		std::cout << "Nie ma nic do usuniecia.\n";
 }
 
-void usunObiektKursor(RenderWindow *window, std::vector<Obiekt*> *tablicaObiektów)
+void usunObiektKursor(RenderWindow *window, std::vector<Planeta*> *tablicaObiektów)
 {
 	Vector2i pocz¹tek = Mouse::getPosition(*window);
 
-	Obiekt *wskazany = nullptr;
+	Planeta *wskazany = nullptr;
 
-	for (Obiekt *obiekt : *tablicaObiektów)
+	for (Planeta *obiekt : *tablicaObiektów)
 	{
-		Vector2i pozycjaNaEkranie = window->mapCoordsToPixel(obiekt->m_circle.getPosition());
+		Vector2i pozycjaNaEkranie = window->mapCoordsToPixel(obiekt->getPosition());
 		int odle = odl2(pocz¹tek, pozycjaNaEkranie);
 
-		if (odle <= obiekt->m_circle.getRadius())
+		if (odle <= obiekt->getRadius())
 		{
 			wskazany = obiekt;
 			break;

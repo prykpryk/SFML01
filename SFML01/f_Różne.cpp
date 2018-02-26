@@ -5,7 +5,7 @@
 
 #include "Sta³e.h"
 
-#include "Obiekt.h"
+#include "Planeta.h"
 #include "PlanetaSta³a.h"
 #include "ZmienneGlob.h"
 
