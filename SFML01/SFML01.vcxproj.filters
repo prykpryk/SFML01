@@ -65,5 +65,8 @@
     <ClCompile Include="f_UI.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="Uniwersum.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
