@@ -22,3 +22,5 @@ void usunObiektKursor(RenderWindow *window, std::vector<Obiekt*> *tablicaObiektó
 void przesuñWidokOkna(RenderWindow &window, Vector2f a);
 
 void skalujWidokOkna(RenderWindow &window, float a);
+
+void zoomScroll(RenderWindow *window, Event *event);

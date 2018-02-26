@@ -25,16 +25,16 @@ void generujObiekt(std::vector<Obiekt*> *tablicaObiektów)
 
 void narysujObiekt(RenderWindow *window, std::vector<Obiekt*> *tablicaObiektów)
 {
-	Vector2i pocz¹tek = Mouse::getPosition(*window);
+	Vector2f pocz¹tek = window->mapPixelToCoords(Mouse::getPosition(*window));
 	while (Mouse::isButtonPressed(Mouse::Left))
 	{
 	}
-	Vector2i koniec = Mouse::getPosition(*window);
-	Vector2d prêdkoœæ = { (koniec.x - pocz¹tek.x)*0.1, (koniec.y - pocz¹tek.y)*0.1 };
-
-
+	Vector2f koniec = window->mapPixelToCoords(Mouse::getPosition(*window));
+	Vector2f prêdkoœæ = { (koniec.x - pocz¹tek.x)*1.0f, (koniec.y - pocz¹tek.y)*1.0f };
+	
+	
 	mu_tObiektów.lock();
-	auto ptr = new Obiekt(tablicaObiektów, 1, { pocz¹tek.x / G_PIKSELI_NA_METR, pocz¹tek.y / G_PIKSELI_NA_METR }, prêdkoœæ, 10, Color(rand(0, 255), rand(0, 255), rand(0, 255)));
+	auto ptr = new Obiekt(tablicaObiektów, 1, static_cast<Vector2d>(pocz¹tek) / G_PIKSELI_NA_METR, static_cast<Vector2d>(prêdkoœæ) / G_PIKSELI_NA_METR, 10, Color(rand(0, 255), rand(0, 255), rand(0, 255)));
 	mu_tObiektów.unlock();
 
 	if (DEBUG)
@@ -80,7 +80,7 @@ void usunObiektKursor(RenderWindow *window, std::vector<Obiekt*> *tablicaObiektó
 void przesuñWidokOkna(RenderWindow &window, Vector2f a)
 {
 	View view = window.getView();
-	view.move(a);
+	view.move(a * view.getSize().x / 160.0f);
 	window.setView(view);
 }
 
@@ -89,4 +89,17 @@ void skalujWidokOkna(RenderWindow &window, float a)
 	View view = window.getView();
 	view.zoom(a);
 	window.setView(view);
+}
+
+void zoomScroll(RenderWindow *window, Event *event)
+{
+	float zmiana = 0.001f * event->mouseWheelScroll.x;		//Do poprawy, skala nie mo¿e byæ ujemna
+
+	if (zmiana > 0.2)
+		zmiana = 0.2;
+
+	if (event->mouseWheelScroll.delta < 0)
+		zmiana = -zmiana;
+
+	skalujWidokOkna(*window, 1.0f + zmiana);
 }

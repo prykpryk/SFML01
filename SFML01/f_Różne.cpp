@@ -20,6 +20,7 @@ int rand(int min, int max)
 	return min + static_cast<int>((max - min + 1) * (mersenne() * fraction));
 }
 
+
 void handleEvents(RenderWindow &window, std::vector<Obiekt*> &tablicaObiektów)
 {
 	Event event;
@@ -49,10 +50,10 @@ void handleEvents(RenderWindow &window, std::vector<Obiekt*> &tablicaObiektów)
 			case Keyboard::Right:
 				przesuñWidokOkna(window, Vector2f(10, 0));
 				break;
-			case Keyboard::Add:
+			case Keyboard::Subtract:
 				skalujWidokOkna(window, 1.2f);
 				break;
-			case Keyboard::Subtract:
+			case Keyboard::Add:
 				skalujWidokOkna(window, 0.8f);
 				break;
 			default:
@@ -69,12 +70,15 @@ void handleEvents(RenderWindow &window, std::vector<Obiekt*> &tablicaObiektów)
 				usunObiektKursor(&window, &tablicaObiektów);
 				break;
 			}
+			break;
+		case Event::MouseWheelScrolled:
+			zoomScroll(&window, &event);
+			break;
 		default:
 			break;
 		}
 	}
 }
-
 
 
 int odl2(Vector2i a, Vector2i b)
