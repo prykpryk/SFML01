@@ -23,7 +23,13 @@ public:
 	double m_masa;
 	Vector2d m_pos;
 
-	Obiekt(std::vector<Obiekt*> *tablicaObiektów, double r, Vector2d pos = { 0, 0 }, Vector2d vel = { 0,0 }, double masa = 10, Color color = Color::White)
+	Obiekt(
+		std::vector<Obiekt*> *tablicaObiektów, 
+		const double r, 
+		const Vector2d pos = { 0, 0 }, 
+		const Vector2d vel = { 0,0 }, 
+		const double masa = 10, 
+		const Color color = Color::White)
 		: m_circle{ r / 2 * G_PIKSELI_NA_METR,16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
 		m_R{ r }, m_masa{ masa }, m_color{ color }
 	{
@@ -63,7 +69,7 @@ public:
 		//mu_tŒladów.unlock();
 	}
 
-	double odleg³oœæ(Obiekt *planeta)
+	double odleg³oœæ(const Obiekt *planeta)
 	{
 		return sqrt(pow(m_pos.x - planeta->m_pos.x, 2) + pow(m_pos.y - planeta->m_pos.y, 2));
 	}
@@ -75,7 +81,7 @@ public:
 		{
 			if (planeta != this)
 			{
-				double wypadkowa = 5.0 * (m_masa * planeta->m_masa) / pow(odleg³oœæ(planeta), 2);
+				double wypadkowa = G_Sta³aGrawitacji * (m_masa * planeta->m_masa) / pow(odleg³oœæ(planeta), 2);
 				double alfa = atan2(planeta->m_pos.x - m_pos.x, planeta->m_pos.y - m_pos.y);
 				sumaSi³.x += wypadkowa * sin(alfa);
 				sumaSi³.y += wypadkowa * cos(alfa);
@@ -84,20 +90,20 @@ public:
 		return sumaSi³;
 	}
 
-	virtual void obliczPozycjê(Time &czas)
+	virtual void obliczPozycjê(const double &czas)		//Musi byæ referencja, inaczej crash???
 	{
 		m_F = obliczSi³yGrawitacji();
 
 
 		Vector2d przysp = m_F / m_masa;
 
-		m_pos.x += 0.5f * m_vel.x * czas.asSeconds();
-		m_pos.y += 0.5f * m_vel.y * czas.asSeconds();
+		m_pos.x += 0.5f * m_vel.x * czas;
+		m_pos.y += 0.5f * m_vel.y * czas;
 
-		m_vel += przysp * static_cast<double>(czas.asSeconds());
+		m_vel += przysp * czas;
 
-		m_pos.x += 0.5f * m_vel.x * czas.asSeconds();
-		m_pos.y += 0.5f * m_vel.y * czas.asSeconds();
+		m_pos.x += 0.5f * m_vel.x * czas;
+		m_pos.y += 0.5f * m_vel.y * czas;
 
 		m_circle.setPosition(m_pos.x*G_PIKSELI_NA_METR, m_pos.y*G_PIKSELI_NA_METR);
 	}
@@ -105,12 +111,10 @@ public:
 	virtual void odœwie¿Œlad()
 	{
 		mu_tŒladów.lock();
-		m_œlad.insert(m_œlad.begin(),(Vertex(static_cast<Vector2f>(m_pos*G_PIKSELI_NA_METR), m_color)));
+		m_œlad.push_back(Vertex(static_cast<Vector2f>(m_pos*G_PIKSELI_NA_METR), m_color));
 
 		if (m_œlad.size() > G_D£UGOŒÆ_ŒLADU)
-		{
-			m_œlad.erase(m_œlad.end() - 1);
-		}
+			m_œlad.erase(m_œlad.begin());
 
 		mu_tŒladów.unlock();
 	}
