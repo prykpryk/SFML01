@@ -37,11 +37,23 @@ void handleEvents(sf::RenderWindow &window, std::vector<Obiekt*> &tablicaObiektó
 		case sf::Event::KeyPressed:
 			switch (event.key.code)
 			{
-			case sf::Keyboard::S:
-				generujObiekt(&tablicaObiektów);
+			case sf::Keyboard::Up:
+				przesuñWidokOkna(window, sf::Vector2f(0, -10));
 				break;
-			case sf::Keyboard::Delete:
-				usunPierwszyObiekt(&tablicaObiektów);
+			case sf::Keyboard::Down:
+				przesuñWidokOkna(window, sf::Vector2f(0, 10));
+				break;
+			case sf::Keyboard::Left:
+				przesuñWidokOkna(window, sf::Vector2f(-10, 0));
+				break;
+			case sf::Keyboard::Right:
+				przesuñWidokOkna(window, sf::Vector2f(10, 0));
+				break;
+			case sf::Keyboard::Add:
+				skalujWidokOkna(window, 1.2f);
+				break;
+			case sf::Keyboard::Subtract:
+				skalujWidokOkna(window, 0.8f);
 				break;
 			default:
 				break;

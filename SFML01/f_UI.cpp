@@ -15,9 +15,9 @@
 
 void generujObiekt(std::vector<Obiekt*> *tablicaObiektów)
 {
-	klatka.lock();
+	mu_tObiektów.lock();
 	auto ptr = new Obiekt(tablicaObiektów, 1, { 0,0 }, { 0,0 }, 10, sf::Color(rand(0, 255), rand(0, 255), rand(0, 255)));
-	klatka.unlock();
+	mu_tObiektów.unlock();
 
 	if (DEBUG)
 		std::cout << "Stworzono obiekt w adresie: " << ptr << "\n";
@@ -33,9 +33,9 @@ void narysujObiekt(sf::RenderWindow *window, std::vector<Obiekt*> *tablicaObiekt
 	sf::Vector2f prêdkoœæ = { (koniec.x - pocz¹tek.x)*0.1f,(koniec.y - pocz¹tek.y)*0.1f };
 
 
-	klatka.lock();
+	mu_tObiektów.lock();
 	auto ptr = new Obiekt(tablicaObiektów, 1, { pocz¹tek.x / G_PIKSELI_NA_METR, pocz¹tek.y / G_PIKSELI_NA_METR }, prêdkoœæ, 10, sf::Color(rand(0, 255), rand(0, 255), rand(0, 255)));
-	klatka.unlock();
+	mu_tObiektów.unlock();
 
 	if (DEBUG)
 		std::cout << "Narysowano obiekt w adresie: " << ptr << " o predkosci " << prêdkoœæ.x << " " << prêdkoœæ.y << "\n";
@@ -75,4 +75,18 @@ void usunObiektKursor(sf::RenderWindow *window, std::vector<Obiekt*> *tablicaObi
 
 	delete wskazany;
 
+}
+
+void przesuñWidokOkna(sf::RenderWindow &window, sf::Vector2f a)
+{
+	sf::View view = window.getView();
+	view.move(a);
+	window.setView(view);
+}
+
+void skalujWidokOkna(sf::RenderWindow &window, float a)
+{
+	sf::View view = window.getView();
+	view.zoom(a);
+	window.setView(view);
 }

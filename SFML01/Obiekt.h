@@ -4,6 +4,7 @@
 #include "Biblioteki.h"
 #include "Definicje.h"
 #include "Sta³e.h"
+#include "ZmienneGlob.h"
 
 class Obiekt
 {
@@ -17,6 +18,7 @@ protected:
 
 public:
 	sf::CircleShape m_circle;
+	sf::VertexArray m_œlad;
 	float m_masa;
 	sf::Vector2f m_pos;
 
@@ -27,7 +29,11 @@ public:
 		m_circle.setPosition(m_pos*G_PIKSELI_NA_METR);
 		m_circle.setOrigin(r / 2 * G_PIKSELI_NA_METR, r / 2 * G_PIKSELI_NA_METR);
 		m_circle.setFillColor(color);
+		m_œlad.setPrimitiveType(sf::LinesStrip);
+
+		//Zarejestruj obiekt
 		tablicaObiektów->push_back(this);
+		tablicaŒladów.push_back(&m_œlad);
 	};
 
 	~Obiekt()
@@ -79,6 +85,12 @@ public:
 		m_pos.y += 0.5f * m_vel.y * czas.asSeconds();
 
 		m_circle.setPosition(m_pos.x*G_PIKSELI_NA_METR, m_pos.y*G_PIKSELI_NA_METR);
+	}
 
+	virtual void odœwie¿Œlad()
+	{
+		mu_tŒladów.lock();
+		m_œlad.append(sf::Vertex(m_pos*G_PIKSELI_NA_METR));
+		mu_tŒladów.unlock();
 	}
 };
