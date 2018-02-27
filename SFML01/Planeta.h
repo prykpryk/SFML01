@@ -44,27 +44,6 @@ public:
 
 	~Planeta()
 	{
-		//Usuniêcie obiektu z tablicy obiektów
-
-		//mu_tObiektów.lock();
-		for (auto it = m_tablicaObiektów->begin(); it != m_tablicaObiektów->end(); )
-		{
-			if (*it == this)
-				it = m_tablicaObiektów->erase(it);
-			else
-				it++;
-		}
-		//mu_tObiektów.lock();
-
-		//mu_tŒladów.lock();
-		for (auto it = tablicaŒladów.begin(); it != tablicaŒladów.end(); )
-		{
-			if (*it == &m_œlad)
-				it = tablicaŒladów.erase(it);
-			else
-				it++;
-		}
-		//mu_tŒladów.unlock();
 	}
 
 	double odleg³oœæ(const Planeta *planeta)

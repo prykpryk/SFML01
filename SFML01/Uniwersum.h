@@ -23,6 +23,7 @@ protected:
 	sf::RenderWindow						*window;
 	double								m_prêdkoœæSymulacji = 1.0;
 	int									m_wybranaWielkosæ = 1;
+	Planeta								*m_œledzonaPlaneta = nullptr;
 
 
 public:
@@ -70,5 +71,16 @@ public:
 	void odœwie¿Kszta³y();
 
 	void zmieñRozmiarWidoku(int w, int h);
+
+	void tŒledŸPlanetê();
+
+	void ustawŒledzon¹Planetê(Planeta * planeta);
+
+	void usuñPlanetê(Planeta * planeta);
+
+	void ustawŒledzon¹PlanetêKursor();
+
+	bool prze³¹czPauzê();
+
 
 };

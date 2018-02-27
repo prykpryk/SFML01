@@ -20,6 +20,13 @@ void Uniwersum::tFizyka()
 
 	while (window->isOpen())
 	{
+		if (m_prêdkoœæSymulacji <= 0)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			clock.restart();
+			continue;
+		}
+
 		numerCyklu++;
 
 		double czas = clock.restart().asSeconds() * m_prêdkoœæSymulacji;
@@ -92,6 +99,12 @@ void Uniwersum::tŒlady()
 
 	while (window->isOpen())
 	{
+		if (m_prêdkoœæSymulacji <= 0)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			continue;
+		}
+
 		clock.restart();
 		numerCyklu++;
 		//mu_tObiektów.lock();  NajwyraŸniej nie potrzebne, po usuniêciu tego mutexa ten w¹tek nie jest bardzo blokowany przez w¹tek fizyki.
@@ -170,7 +183,7 @@ Planeta* Uniwersum::planetaKursor()
 
 void Uniwersum::usunObiektKursor()
 {
-	delete planetaKursor();
+	usuñPlanetê(planetaKursor());
 }
 
 void Uniwersum::przesuñWidokOkna(sf::Vector2f a)
@@ -230,7 +243,8 @@ void Uniwersum::zoomScroll(sf::Event &event)
 	œrodek -= zmianaSkali * (kursorCoord - œrodek);
 
 	view.zoom(1.0f + zmianaSkali);
-	view.setCenter(œrodek);
+	if (m_œledzonaPlaneta == nullptr)
+		view.setCenter(œrodek);
 	window->setView(view);
 
 	odœwie¿Kszta³y();
@@ -294,6 +308,9 @@ void Uniwersum::tHandleEvents()
 			case sf::Keyboard::D:
 				debugujPlanetê();
 				break;
+			case sf::Keyboard::P:
+				prze³¹czPauzê();
+				break;
 			default:
 				break;
 			}
@@ -306,6 +323,9 @@ void Uniwersum::tHandleEvents()
 				break;
 			case sf::Mouse::Right:
 				usunObiektKursor();
+				break;
+			case sf::Mouse::Middle:
+				ustawŒledzon¹PlanetêKursor();
 				break;
 			}
 			break;
@@ -337,4 +357,56 @@ void Uniwersum::zmieñRozmiarWidoku(int w, int h)
 	window->setView(view);
 
 	odœwie¿Kszta³y();
+}
+
+void Uniwersum::tŒledŸPlanetê()
+{
+	if (m_œledzonaPlaneta == nullptr) return;
+
+	sf::View view = window->getView();
+	view.setCenter(static_cast<float>(m_œledzonaPlaneta->m_pos.x*G_PIKSELI_NA_METR), static_cast<float>(m_œledzonaPlaneta->m_pos.y*G_PIKSELI_NA_METR));
+	window->setView(view);
+}
+
+void Uniwersum::ustawŒledzon¹Planetê(Planeta* planeta)
+{
+	m_œledzonaPlaneta = planeta;
+}
+
+void Uniwersum::usuñPlanetê(Planeta* planeta)
+{
+	if (planeta == m_œledzonaPlaneta)
+		m_œledzonaPlaneta = nullptr;
+
+	for (auto it = m_tablicaObiektów.begin(); it != m_tablicaObiektów.end(); )
+	{
+		if (*it == planeta)
+			it = m_tablicaObiektów.erase(it);
+		else
+			it++;
+	}
+
+	for (auto it = tablicaŒladów.begin(); it != tablicaŒladów.end(); )
+	{
+		if (*it == &(planeta->m_œlad))
+			it = tablicaŒladów.erase(it);
+		else
+			it++;
+	}
+
+	delete planeta;
+}
+
+void Uniwersum::ustawŒledzon¹PlanetêKursor()
+{
+	ustawŒledzon¹Planetê(planetaKursor());
+}
+
+bool Uniwersum::prze³¹czPauzê()
+{
+	m_prêdkoœæSymulacji = -m_prêdkoœæSymulacji;
+	if (m_prêdkoœæSymulacji < 0) 
+		return true;
+	else
+		return false;
 }
