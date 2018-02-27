@@ -49,6 +49,8 @@ public:
 
 	double obliczPromieñ(double masa);
 
+	Planeta * planetaKursor();
+
 	void usunObiektKursor();
 
 	void przesuñWidokOkna(sf::Vector2f a);

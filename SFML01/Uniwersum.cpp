@@ -150,11 +150,9 @@ double Uniwersum::obliczPromieñ(double masa)
 	return cbrt(masa);
 }
 
-void Uniwersum::usunObiektKursor()
-{
+Planeta* Uniwersum::planetaKursor()
+{	//Funkcja wska¿e obiekt pod kursorem, je¿eli jest wiêcej ni¿ 1 to bêdzie to obiekt najni¿ej.
 	sf::Vector2f kursor = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
-
-	Planeta *wskazany = nullptr;
 
 	for (Planeta *obiekt : m_tablicaObiektów)
 	{
@@ -163,13 +161,16 @@ void Uniwersum::usunObiektKursor()
 
 		if (odle <= obiekt->getRadius())
 		{
-			wskazany = obiekt;
-			break;
+			return obiekt;
 		}
 	}
 
-	delete wskazany;
+	return nullptr;
+}
 
+void Uniwersum::usunObiektKursor()
+{
+	delete planetaKursor();
 }
 
 void Uniwersum::przesuñWidokOkna(sf::Vector2f a)
