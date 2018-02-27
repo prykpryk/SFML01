@@ -7,15 +7,14 @@ class PlanetaSta³a : public Planeta
 {
 public:
 	PlanetaSta³a(
-		std::vector<Planeta*> *tablicaObiektów,
+		std::vector<Planeta*> *tablicaObiektów, 
+		const double masa,
 		const double r,
 		const Vector2d pos,
 		const Vector2d vel = { 0,0 }, 
-		const double masa = 10, 
 		const sf::Color color = sf::Color::White)
-		: Planeta{ tablicaObiektów, r, pos, vel, masa, color }
+		: Planeta{ tablicaObiektów,  masa, r, pos, vel, color }
 	{
-		setPointCount(30);
 	};
 	virtual void obliczPozycjê(const double &czas)
 	{};

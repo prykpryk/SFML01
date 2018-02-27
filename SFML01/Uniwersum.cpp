@@ -108,15 +108,16 @@ void Uniwersum::tŒlady()
 }
 
 Planeta* Uniwersum::dodajPlanetê(
+	const double masa,
 	const double r,
 	const Vector2d pos,
 	const Vector2d vel,
-	const double masa,
-	const sf::Color color)
+	const sf::Color color,
+	bool zablokowana)
 {
-	auto ptr = new Planeta(&m_tablicaObiektów, r,
+	auto ptr = new Planeta(&m_tablicaObiektów, masa, r,
 		static_cast<Vector2d>(pos), static_cast<Vector2d>(vel),
-		masa, color);
+		color, zablokowana);
 
 	mu_tObiektów.lock();
 	m_tablicaObiektów.push_back(ptr);
@@ -126,15 +127,18 @@ Planeta* Uniwersum::dodajPlanetê(
 }
 
 PlanetaSta³a* Uniwersum::dodajPlanetêSta³¹(
-	const double r,
-	const Vector2d pos,
-	const Vector2d vel,
 	const double masa,
+
+	const double r,
+
+	const Vector2d pos,
+
+	const Vector2d vel,
 	const sf::Color color)
 {
-	auto ptr = new PlanetaSta³a(&m_tablicaObiektów, r,
+	auto ptr = new PlanetaSta³a(&m_tablicaObiektów, masa, r,
 		static_cast<Vector2d>(pos), static_cast<Vector2d>(vel),
-		masa, color);
+		 color);
 
 	mu_tObiektów.lock();
 	m_tablicaObiektów.push_back(ptr);
@@ -198,7 +202,7 @@ void Uniwersum::narysujObiekt()
 	double masa = pow(10.0, m_wybranaWielkosæ);
 	double r = cbrt(masa);
 
-	Planeta* ptr = dodajPlanetê(r, static_cast<Vector2d>(pocz¹tek) / G_PIKSELI_NA_METR, static_cast<Vector2d>(prêdkoœæ) / G_PIKSELI_NA_METR, masa, sf::Color(rand(0, 255), rand(0, 255), rand(0, 255)));
+	Planeta* ptr = dodajPlanetê(masa, r, static_cast<Vector2d>(pocz¹tek) / G_PIKSELI_NA_METR, static_cast<Vector2d>(prêdkoœæ) / G_PIKSELI_NA_METR, sf::Color(rand(0, 255), rand(0, 255), rand(0, 255)));
 
 	if (DEBUG)
 		std::cout << "Narysowano obiekt w adresie: " << ptr << ",pozycja " << ptr->getPosition().x << " " << ptr->getPosition().y << " o predkosci " << prêdkoœæ.x << " " << prêdkoœæ.y << "\n";

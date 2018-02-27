@@ -300,7 +300,6 @@
     <ClInclude Include="f_Różne.h" />
     <ClInclude Include="f_UI.h" />
     <ClInclude Include="Planeta.h" />
-    <ClInclude Include="PlanetaStała.h" />
     <ClInclude Include="Stałe.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ZmienneGlob.h" />

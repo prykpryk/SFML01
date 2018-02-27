@@ -15,6 +15,7 @@ protected:
 	double m_R;
 	std::vector<Planeta*> *m_tablicaObiektów;
 	sf::Color m_color;
+	bool m_zablokowana;
 
 public:
 	std::vector<sf::Vertex> m_œlad;
@@ -22,12 +23,12 @@ public:
 	Vector2d m_pos;
 
 	Planeta(
-		std::vector<Planeta*> *tablicaObiektów, 
-		const double r, 
-		const Vector2d pos = { 0, 0 }, 
+		std::vector<Planeta*> *tablicaObiektów, const double masa,
+		const double r,
+		const Vector2d pos = { 0, 0 },
 		const Vector2d vel = { 0,0 }, 
-		const double masa = 10, 
-		const sf::Color color = sf::Color::White)
+		const sf::Color color = sf::Color::White,
+		bool zablokowana = false)
 		: CircleShape{ static_cast<float>(r * G_PIKSELI_NA_METR),16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
 		m_R{ r }, m_masa{ masa }, m_color{ color }
 	{
@@ -88,6 +89,8 @@ public:
 
 	virtual void obliczPozycjê(const double &czas)		//Musi byæ referencja, inaczej crash???
 	{
+		if (m_zablokowana) return;
+
 		m_F = obliczSi³yGrawitacji();
 
 

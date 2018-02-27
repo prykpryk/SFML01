@@ -43,9 +43,9 @@ public:
 
 	void tŒlady();
 
-	Planeta * dodajPlanetê(const double r, const Vector2d pos, const Vector2d vel, const double masa, const sf::Color color);
+	Planeta * dodajPlanetê(const double masa, const double r, const Vector2d pos, const Vector2d vel, const sf::Color color, bool zablokowana = false);
 
-	PlanetaSta³a * dodajPlanetêSta³¹(const double r, const Vector2d pos, const Vector2d vel, const double masa, const sf::Color color);
+	PlanetaSta³a * dodajPlanetêSta³¹(const double masa, const double r, const Vector2d pos, const Vector2d vel, const sf::Color color);
 
 	void usunObiektKursor();
 
