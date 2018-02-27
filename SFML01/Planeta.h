@@ -1,12 +1,12 @@
 #pragma once
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Biblioteki.h"
 #include "Definicje.h"
 #include "Sta³e.h"
 #include "ZmienneGlob.h"
 
-class Planeta : public CircleShape
+class Planeta : public sf::CircleShape
 {
 protected:
 
@@ -14,10 +14,10 @@ protected:
 	Vector2d m_F;
 	double m_R;
 	std::vector<Planeta*> *m_tablicaObiektów;
-	Color m_color;
+	sf::Color m_color;
 
 public:
-	std::vector<Vertex> m_œlad;
+	std::vector<sf::Vertex> m_œlad;
 	double m_masa;
 	Vector2d m_pos;
 
@@ -27,12 +27,12 @@ public:
 		const Vector2d pos = { 0, 0 }, 
 		const Vector2d vel = { 0,0 }, 
 		const double masa = 10, 
-		const Color color = Color::White)
-		: CircleShape{ r * G_PIKSELI_NA_METR,16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
+		const sf::Color color = sf::Color::White)
+		: CircleShape{ static_cast<float>(r * G_PIKSELI_NA_METR),16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
 		m_R{ r }, m_masa{ masa }, m_color{ color }
 	{
-		setPosition(static_cast<Vector2f>(m_pos*G_PIKSELI_NA_METR));
-		setOrigin(r * G_PIKSELI_NA_METR, r * G_PIKSELI_NA_METR);
+		setPosition(static_cast<sf::Vector2f>(m_pos*G_PIKSELI_NA_METR));
+		setOrigin(static_cast<float>(r * G_PIKSELI_NA_METR), static_cast<float>(r * G_PIKSELI_NA_METR));
 		setFillColor(m_color);
 		//m_œlad.setPrimitiveType(LinesStrip);
 
@@ -101,13 +101,13 @@ public:
 		m_pos.x += 0.5f * m_vel.x * czas;
 		m_pos.y += 0.5f * m_vel.y * czas;
 
-		setPosition(m_pos.x*G_PIKSELI_NA_METR, m_pos.y*G_PIKSELI_NA_METR);
+		setPosition(static_cast<float>(m_pos.x*G_PIKSELI_NA_METR), static_cast<float>(m_pos.y*G_PIKSELI_NA_METR));
 	}
 
 	virtual void odœwie¿Œlad()
 	{
 		mu_tŒladów.lock();
-		m_œlad.push_back(Vertex(static_cast<Vector2f>(m_pos*G_PIKSELI_NA_METR), m_color));
+		m_œlad.push_back(sf::Vertex(static_cast<sf::Vector2f>(m_pos*G_PIKSELI_NA_METR), m_color));
 
 		if (m_œlad.size() > G_D£UGOŒÆ_ŒLADU)
 			m_œlad.erase(m_œlad.begin());

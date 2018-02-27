@@ -1,8 +1,8 @@
 #pragma once
 
-#define DEBUG false
+#define DEBUG true
 #include "Biblioteki.h"
 
-using namespace sf;
+//using namespace sf;
 
-using Vector2d = Vector2<double>;
+using Vector2d = sf::Vector2<double>;

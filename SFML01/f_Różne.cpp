@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Biblioteki.h"
 
 #include "Definicje.h"
@@ -20,14 +20,14 @@ int rand(int min, int max)
 	return min + static_cast<int>((max - min + 1) * (mersenne() * fraction));
 }
 
-int odl2(Vector2i a, Vector2i b)
+int odl2(sf::Vector2i a, sf::Vector2i b)
 {
-	Vector2i c = b - a;
-	return sqrt(c.x*c.x + c.y*c.y);
+	sf::Vector2i c = b - a;
+	return static_cast<int>(sqrt(c.x*c.x + c.y*c.y));
 }
 
-float odl2(Vector2f a, Vector2f b)
+float odl2(sf::Vector2f a, sf::Vector2f b)
 {
-	Vector2f c = b - a;
+	sf::Vector2f c = b - a;
 	return sqrt(c.x*c.x + c.y*c.y);
 }

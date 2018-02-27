@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "mutex"
 #include <vector>
 #include "Definicje.h"
@@ -11,4 +11,4 @@ double		G_PrêdkoœæSymulacji{ 1.0 };
 std::mutex	mu_tObiektów;
 std::mutex	mu_tŒladów;
 std::mutex	mu_tRys;
-std::vector	<std::vector<Vertex>*> tablicaŒladów;
+std::vector	<std::vector<sf::Vertex>*> tablicaŒladów;

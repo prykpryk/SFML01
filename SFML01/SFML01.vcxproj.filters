@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
@@ -47,9 +44,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
     <ClCompile Include="SFML01.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
@@ -67,6 +61,9 @@
     </ClCompile>
     <ClCompile Include="Uniwersum.h">
       <Filter>Pliki nagłówkowe</Filter>
+    </ClCompile>
+    <ClCompile Include="Uniwersum.cpp">
+      <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

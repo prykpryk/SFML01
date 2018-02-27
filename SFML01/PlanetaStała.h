@@ -12,7 +12,7 @@ public:
 		const Vector2d pos,
 		const Vector2d vel = { 0,0 }, 
 		const double masa = 10, 
-		const Color color = Color::White)
+		const sf::Color color = sf::Color::White)
 		: Planeta{ tablicaObiektów, r, pos, vel, masa, color }
 	{
 		setPointCount(30);
