@@ -253,9 +253,7 @@ void Uniwersum::tHandleEvents()
 			window->close();
 			break;
 		case sf::Event::Resized:	//Zmieñ rozmiar okna
-			G_WINWIDTH = event.size.width;
-			G_WINHEIGHT = event.size.height;
-			std::cout << "Nowe wymiary okna: " << event.size.width << "x" << event.size.height << "\n";
+			zmieñRozmiarWidoku(event.size.width, event.size.height);
 			break;
 		case sf::Event::KeyPressed:
 			switch (event.key.code)
@@ -317,4 +315,17 @@ void Uniwersum::odœwie¿Kszta³y()
 	{
 		obiekt->odœwie¿Kszta³t(window);
 	}
+}
+
+void Uniwersum::zmieñRozmiarWidoku(int w, int h)
+{
+	sf::View view = window->getView();
+
+	sf::Vector2f rozmiarStary = view.getSize();
+
+	view.setSize(rozmiarStary.x, rozmiarStary.x * h / w);
+
+	window->setView(view);
+
+	odœwie¿Kszta³y();
 }

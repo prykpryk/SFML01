@@ -65,4 +65,6 @@ public:
 
 	void odœwie¿Kszta³y();
 
+	void zmieñRozmiarWidoku(int w, int h);
+
 };

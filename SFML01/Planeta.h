@@ -117,8 +117,8 @@ public:
 
 	inline void odœwie¿Kszta³t(sf::RenderWindow *window)
 	{
-		float wielkoœæ = window->getView().getSize().x;		//Bêdzie dziwnie przy oknie ma³o kwadratowym.
-		int x = static_cast<int>(getRadius() / wielkoœæ * 50 * 24);
+		float wielkoœæ = window->getView().getSize().x / window->getSize().x;		//Bêdzie dziwnie przy oknie ma³o kwadratowym.
+		int x = static_cast<int>(getRadius() / wielkoœæ) * 2;
 
 		if (x < 6)
 			x = 6;
