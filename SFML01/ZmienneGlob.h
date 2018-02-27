@@ -8,3 +8,4 @@ extern	double		G_PrêdkoœæSymulacji;
 extern	std::mutex	mu_tObiektów;
 extern	std::vector	<std::vector<Vertex>*> tablicaŒladów;
 extern	std::mutex	mu_tŒladów;
+extern	std::mutex	mu_tRys;

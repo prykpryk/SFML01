@@ -76,6 +76,30 @@ public:
 		window->display();
 	}
 
+	void tRysowanie2()
+	{	
+		window->setActive(true);
+		while (window->isOpen())
+		{
+			mu_tRys.lock();
+			window->clear(Color::Black);
+
+			for (Planeta *obiekt : m_tablicaObiektów)
+			{
+				window->draw(*obiekt);
+			}
+
+			for (std::vector<Vertex> *œlad : tablicaŒladów)
+			{
+				window->draw(&(œlad->at(0)), œlad->size(), sf::LineStrip); //std::list<Vertex> - nie dzia³a
+			}
+
+			window->display();
+			mu_tRys.unlock();
+		}
+		window->setActive(false);
+	}
+
 	void tŒlady()
 	{
 		Clock clock;
@@ -133,29 +157,6 @@ public:
 		return ptr;
 	}
 
-	/*void zoomScroll(Event &event)
-	{
-		View view = window->getView();
-
-		Vector2f kursorCoord = window->mapPixelToCoords(Mouse::getPosition(*window));
-		Vector2f œrodek = view.getCenter();
-
-		float zmianaSkali = -G_ZOOM_SENS * event.mouseWheelScroll.x;
-
-		if (zmianaSkali > G_ZOOM_MAXSPEED)
-			zmianaSkali = G_ZOOM_MAXSPEED;
-
-		if (event.mouseWheelScroll.delta < 0)
-			zmianaSkali = -zmianaSkali;
-
-		œrodek -= zmianaSkali * (kursorCoord - œrodek);
-
-		view.zoom(1.0f + zmianaSkali);
-		view.setCenter(œrodek);
-		window->setView(view);
-
-	}*/
-
 	void usunObiektKursor()
 	{
 		Vector2i pocz¹tek = Mouse::getPosition(*window);
@@ -199,20 +200,23 @@ public:
 
 	void narysujObiekt()
 	{
+		//std::cout << "Mouse position: " << Mouse::getPosition(*window).x << " " << Mouse::getPosition(*window).y <<"\n";
 		Vector2f pocz¹tek = window->mapPixelToCoords(Mouse::getPosition(*window));
+		std::cout << pocz¹tek.x << " " << pocz¹tek.y << "\n";
 		while (Mouse::isButtonPressed(Mouse::Left))
 		{
 		}
 		Vector2f koniec = window->mapPixelToCoords(Mouse::getPosition(*window));
 		Vector2f prêdkoœæ = { (koniec.x - pocz¹tek.x)*1.0f, (koniec.y - pocz¹tek.y)*1.0f };
 
-		double masa = pow(10.0, G_WybranaWielkosæ);
+
+		double masa = pow(10.0, m_wybranaWielkosæ);
 		double œrednica = cbrt(masa);
 
-		Planeta* ptr = dodajPlanetê(œrednica, static_cast<Vector2d>(pocz¹tek), static_cast<Vector2d>(prêdkoœæ), masa, Color(rand(0, 255), rand(0, 255), rand(0, 255)));
+		Planeta* ptr = dodajPlanetê(œrednica, static_cast<Vector2d>(pocz¹tek) / G_PIKSELI_NA_METR, static_cast<Vector2d>(prêdkoœæ) / G_PIKSELI_NA_METR, masa, Color(rand(0, 255), rand(0, 255), rand(0, 255)));
 
 		if (DEBUG)
-			std::cout << "Narysowano obiekt w adresie: " << ptr << " o predkosci " << prêdkoœæ.x << " " << prêdkoœæ.y << "\n";
+			std::cout << "Narysowano obiekt w adresie: " << ptr << ",pozycja " << ptr->getPosition().x << " " << ptr->getPosition().y <<" o predkosci " << prêdkoœæ.x << " " << prêdkoœæ.y << "\n";
 	}
 
 	void zoomScroll(Event &event)
