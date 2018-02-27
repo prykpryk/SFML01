@@ -28,11 +28,11 @@ public:
 		const Vector2d vel = { 0,0 }, 
 		const double masa = 10, 
 		const Color color = Color::White)
-		: CircleShape{ r / 2 * G_PIKSELI_NA_METR,16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
+		: CircleShape{ r * G_PIKSELI_NA_METR,16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
 		m_R{ r }, m_masa{ masa }, m_color{ color }
 	{
 		setPosition(static_cast<Vector2f>(m_pos*G_PIKSELI_NA_METR));
-		setOrigin(r / 2 * G_PIKSELI_NA_METR, r / 2 * G_PIKSELI_NA_METR);
+		setOrigin(r * G_PIKSELI_NA_METR, r * G_PIKSELI_NA_METR);
 		setFillColor(m_color);
 		//m_œlad.setPrimitiveType(LinesStrip);
 

@@ -150,6 +150,7 @@ public:
 		auto ptr = new PlanetaSta³a(&m_tablicaObiektów, r,
 			static_cast<Vector2d>(pos), static_cast<Vector2d>(vel),
 			masa, color);
+
 		mu_tObiektów.lock();
 		m_tablicaObiektów.push_back(ptr);
 		mu_tObiektów.unlock();
@@ -159,14 +160,14 @@ public:
 
 	void usunObiektKursor()
 	{
-		Vector2i pocz¹tek = Mouse::getPosition(*window);
+		Vector2f kursor = window->mapPixelToCoords(Mouse::getPosition(*window));
 
 		Planeta *wskazany = nullptr;
 
 		for (Planeta *obiekt : m_tablicaObiektów)
 		{
-			Vector2i pozycjaNaEkranie = window->mapCoordsToPixel(obiekt->getPosition());
-			int odle = odl2(pocz¹tek, pozycjaNaEkranie);
+			Vector2f œrodekPlanety = obiekt->getPosition();
+			float odle = odl2(kursor, œrodekPlanety);
 
 			if (odle <= obiekt->getRadius())
 			{
@@ -211,9 +212,9 @@ public:
 
 
 		double masa = pow(10.0, m_wybranaWielkosæ);
-		double œrednica = cbrt(masa);
+		double r = cbrt(masa);
 
-		Planeta* ptr = dodajPlanetê(œrednica, static_cast<Vector2d>(pocz¹tek) / G_PIKSELI_NA_METR, static_cast<Vector2d>(prêdkoœæ) / G_PIKSELI_NA_METR, masa, Color(rand(0, 255), rand(0, 255), rand(0, 255)));
+		Planeta* ptr = dodajPlanetê(r, static_cast<Vector2d>(pocz¹tek) / G_PIKSELI_NA_METR, static_cast<Vector2d>(prêdkoœæ) / G_PIKSELI_NA_METR, masa, Color(rand(0, 255), rand(0, 255), rand(0, 255)));
 
 		if (DEBUG)
 			std::cout << "Narysowano obiekt w adresie: " << ptr << ",pozycja " << ptr->getPosition().x << " " << ptr->getPosition().y <<" o predkosci " << prêdkoœæ.x << " " << prêdkoœæ.y << "\n";
@@ -240,6 +241,18 @@ public:
 		view.setCenter(œrodek);
 		window->setView(view);
 
+	}
+
+	void debugujPlanetê()
+	{
+		Planeta* planeta = m_tablicaObiektów[0];
+		std::cout <<"###################\n" << 
+			"Radius: " << planeta->getRadius() << "\n"
+			<< "Planeta pos: " << planeta->getPosition().x << " " << planeta->getPosition().y << "\n"
+			<< "PlanetatoPixel: " << window->mapCoordsToPixel(planeta->getPosition()).x << " " << window->mapCoordsToPixel(planeta->getPosition()).y << "\n"
+			<< "Kursor: " << Mouse::getPosition(*window).x << " " << Mouse::getPosition(*window).y << "\n"
+			<< "Kursortocoord: " << window->mapPixelToCoords(Mouse::getPosition(*window)).x << " " << window->mapPixelToCoords(Mouse::getPosition(*window)).y << "\n"
+			<< "Odleg³oœæ :" << odl2(planeta->getPosition(), window->mapPixelToCoords(Mouse::getPosition(*window))) << "\n";
 	}
 
 	void tHandleEvents()
@@ -283,6 +296,9 @@ public:
 					break;
 				case Keyboard::Period:
 					wybierzPrêdkoœæSymulacji(2.0);
+					break;
+				case Keyboard::D:
+					debugujPlanetê();
 					break;
 				default:
 					break;

@@ -25,3 +25,9 @@ int odl2(Vector2i a, Vector2i b)
 	Vector2i c = b - a;
 	return sqrt(c.x*c.x + c.y*c.y);
 }
+
+float odl2(Vector2f a, Vector2f b)
+{
+	Vector2f c = b - a;
+	return sqrt(c.x*c.x + c.y*c.y);
+}
