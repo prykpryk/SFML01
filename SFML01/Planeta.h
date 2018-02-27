@@ -114,4 +114,17 @@ public:
 
 		mu_tŒladów.unlock();
 	}
+
+	inline void odœwie¿Kszta³t(sf::RenderWindow *window)
+	{
+		float wielkoœæ = window->getView().getSize().x;		//Bêdzie dziwnie przy oknie ma³o kwadratowym.
+		int x = static_cast<int>(getRadius() / wielkoœæ * 50 * 24);
+
+		if (x < 6)
+			x = 6;
+		if (x > 100)
+			x = 100;
+
+		setPointCount(x);
+	}
 };

@@ -186,15 +186,14 @@ void Uniwersum::wybierzPrêdkoœæSymulacji(double i)
 
 void Uniwersum::narysujObiekt()
 {
-	//std::cout << "Mouse position: " << Mouse::getPosition(*window).x << " " << Mouse::getPosition(*window).y <<"\n";
+
 	sf::Vector2f pocz¹tek = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
-	std::cout << pocz¹tek.x << " " << pocz¹tek.y << "\n";
+
 	while (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-	}
+	{}
+
 	sf::Vector2f koniec = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 	sf::Vector2f prêdkoœæ = { (koniec.x - pocz¹tek.x)*1.0f, (koniec.y - pocz¹tek.y)*1.0f };
-
 
 	double masa = pow(10.0, m_wybranaWielkosæ);
 	double r = cbrt(masa);
@@ -226,6 +225,8 @@ void Uniwersum::zoomScroll(sf::Event &event)
 	view.setCenter(œrodek);
 	window->setView(view);
 
+	odœwie¿Kszta³y();
+
 }
 
 void Uniwersum::debugujPlanetê()
@@ -237,7 +238,8 @@ void Uniwersum::debugujPlanetê()
 		<< "PlanetatoPixel: " << window->mapCoordsToPixel(planeta->getPosition()).x << " " << window->mapCoordsToPixel(planeta->getPosition()).y << "\n"
 		<< "Kursor: " << sf::Mouse::getPosition(*window).x << " " << sf::Mouse::getPosition(*window).y << "\n"
 		<< "Kursortocoord: " << window->mapPixelToCoords(sf::Mouse::getPosition(*window)).x << " " << window->mapPixelToCoords(sf::Mouse::getPosition(*window)).y << "\n"
-		<< "Odleg³oœæ :" << odl2(planeta->getPosition(), window->mapPixelToCoords(sf::Mouse::getPosition(*window))) << "\n";
+		<< "Odleg³oœæ :" << odl2(planeta->getPosition(), window->mapPixelToCoords(sf::Mouse::getPosition(*window))) << "\n"
+		<< window->getView().getSize().x << "\n";
 }
 
 void Uniwersum::tHandleEvents()
@@ -306,5 +308,13 @@ void Uniwersum::tHandleEvents()
 		default:
 			break;
 		}
+	}
+}
+
+void Uniwersum::odœwie¿Kszta³y()
+{
+	for (auto obiekt : m_tablicaObiektów)
+	{
+		obiekt->odœwie¿Kszta³t(window);
 	}
 }

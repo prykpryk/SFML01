@@ -63,4 +63,6 @@ public:
 
 	void tHandleEvents();
 
+	void odœwie¿Kszta³y();
+
 };
