@@ -219,7 +219,7 @@ void Uniwersum::narysujObiekt()
 	double masa = pow(10.0, m_wybranaWielkosæ);
 	double r = cbrt(masa);
 
-	Planeta* ptr = dodajPlanetê(masa, r, static_cast<Vector2d>(pocz¹tek) / G_PIKSELI_NA_METR, static_cast<Vector2d>(prêdkoœæ) / G_PIKSELI_NA_METR, sf::Color(rand(0, 255), rand(0, 255), rand(0, 255)));
+	Planeta* ptr = dodajPlanetê(masa, r, static_cast<Vector2d>(pocz¹tek), static_cast<Vector2d>(prêdkoœæ), sf::Color(rand(0, 255), rand(0, 255), rand(0, 255)));
 
 	if (DEBUG)
 		std::cout << "Narysowano obiekt w adresie: " << ptr << ",pozycja " << ptr->getPosition().x << " " << ptr->getPosition().y << " o predkosci " << prêdkoœæ.x << " " << prêdkoœæ.y << "\n";
@@ -364,7 +364,7 @@ void Uniwersum::tŒledŸPlanetê()
 	if (m_œledzonaPlaneta == nullptr) return;
 
 	sf::View view = window->getView();
-	view.setCenter(static_cast<float>(m_œledzonaPlaneta->m_pos.x*G_PIKSELI_NA_METR), static_cast<float>(m_œledzonaPlaneta->m_pos.y*G_PIKSELI_NA_METR));
+	view.setCenter(static_cast<float>(m_œledzonaPlaneta->m_pos.x), static_cast<float>(m_œledzonaPlaneta->m_pos.y));
 	window->setView(view);
 }
 

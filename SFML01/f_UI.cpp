@@ -8,6 +8,7 @@ void instrukcja()
 		"LPM przeci¹g.\t- stworzenie planety z prêdkoœci¹\n"
 		"ŒPM\t\t- œledzenie planety\n"
 		"PPM\t\t- usuniêcie planety\n"
+		"P\t\t- pauza\n"
 		"Strza³ki\t- przesuwanie mapy\n"
 		"Scroll\t\t- zoom i przesuwanie mapy\n"
 		"+ i -\t\t- zmiana rozmiaru tworzonej planety\n"

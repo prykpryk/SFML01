@@ -30,11 +30,11 @@ public:
 		const Vector2d vel = { 0,0 }, 
 		const sf::Color color = sf::Color::White,
 		bool zablokowana = false)
-		: CircleShape{ static_cast<float>(r * G_PIKSELI_NA_METR),16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
+		: CircleShape{ static_cast<float>(r),16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
 		m_R{ r }, m_masa{ masa }, m_color{ color }, m_zablokowana{ zablokowana }
 	{
-		setPosition(static_cast<sf::Vector2f>(m_pos*G_PIKSELI_NA_METR));
-		setOrigin(static_cast<float>(r * G_PIKSELI_NA_METR), static_cast<float>(r * G_PIKSELI_NA_METR));
+		setPosition(static_cast<sf::Vector2f>(m_pos));
+		setOrigin(static_cast<float>(r), static_cast<float>(r));
 		setFillColor(m_color);
 		//m_œlad.setPrimitiveType(LinesStrip);
 
@@ -84,13 +84,13 @@ public:
 		m_pos.x += 0.5f * m_vel.x * czas;
 		m_pos.y += 0.5f * m_vel.y * czas;
 
-		setPosition(static_cast<float>(m_pos.x*G_PIKSELI_NA_METR), static_cast<float>(m_pos.y*G_PIKSELI_NA_METR));
+		setPosition(static_cast<float>(m_pos.x), static_cast<float>(m_pos.y));
 	}
 
 	virtual void odœwie¿Œlad()
 	{
 		mu_tŒladów.lock();
-		m_œlad.push_back(sf::Vertex(static_cast<sf::Vector2f>(m_pos*G_PIKSELI_NA_METR), m_color));
+		m_œlad.push_back(sf::Vertex(static_cast<sf::Vector2f>(m_pos), m_color));
 
 		if (m_œlad.size() > G_D£UGOŒÆ_ŒLADU)
 			m_œlad.erase(m_œlad.begin());
