@@ -45,7 +45,9 @@ public:
 
 	Planeta * dodajPlanetê(const double masa, const double r, const Vector2d pos, const Vector2d vel, const sf::Color color, bool zablokowana = false);
 
-	PlanetaSta³a * dodajPlanetêSta³¹(const double masa, const double r, const Vector2d pos, const Vector2d vel, const sf::Color color);
+	Planeta * dodajPlanetê(const double masa, const Vector2d pos, const Vector2d vel, const sf::Color color, bool zablokowana = false);
+
+	double obliczPromieñ(double masa);
 
 	void usunObiektKursor();
 

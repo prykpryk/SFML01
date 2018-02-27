@@ -23,14 +23,15 @@ public:
 	Vector2d m_pos;
 
 	Planeta(
-		std::vector<Planeta*> *tablicaObiektów, const double masa,
+		std::vector<Planeta*> *tablicaObiektów, 
+		const double masa,
 		const double r,
 		const Vector2d pos = { 0, 0 },
 		const Vector2d vel = { 0,0 }, 
 		const sf::Color color = sf::Color::White,
 		bool zablokowana = false)
 		: CircleShape{ static_cast<float>(r * G_PIKSELI_NA_METR),16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
-		m_R{ r }, m_masa{ masa }, m_color{ color }
+		m_R{ r }, m_masa{ masa }, m_color{ color }, m_zablokowana{ zablokowana }
 	{
 		setPosition(static_cast<sf::Vector2f>(m_pos*G_PIKSELI_NA_METR));
 		setOrigin(static_cast<float>(r * G_PIKSELI_NA_METR), static_cast<float>(r * G_PIKSELI_NA_METR));
