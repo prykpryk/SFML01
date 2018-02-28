@@ -6,14 +6,13 @@
 #include "Planeta.h"
 
 Planeta::Planeta(
-	std::vector<Planeta*> *tablicaObiektów,
 	const double masa,
 	const double r,
 	const Vector2d pos = { 0, 0 },
 	const Vector2d vel = { 0,0 },
 	const sf::Color color = sf::Color::White,
 	bool zablokowana = false)
-	: CircleShape{ static_cast<float>(r),16 }, m_pos{ pos }, m_vel{ vel }, m_tablicaObiektów{ tablicaObiektów },
+	: CircleShape{ static_cast<float>(r),16 }, m_pos{ pos }, m_vel{ vel },
 	m_R{ r }, m_masa{ masa }, m_color{ color }, m_zablokowana{ zablokowana }
 {
 	setPosition(static_cast<sf::Vector2f>(m_pos));
@@ -29,7 +28,7 @@ Planeta::~Planeta()
 {
 }
 
-double Planeta::odleg³oœæ(const Planeta *planeta)
+double Planeta::odleg³oœæ(const Planeta *planeta) const
 {
 	return sqrt(pow(m_pos.x - planeta->m_pos.x, 2) + pow(m_pos.y - planeta->m_pos.y, 2));
 }
@@ -37,42 +36,6 @@ double Planeta::odleg³oœæ(const Planeta *planeta)
 double Planeta::odleg³oœæ(const Planeta *a, const Planeta *b)
 {
 	return sqrt(pow(b->m_pos.y - a->m_pos.x, 2) + pow(b->m_pos.y - a->m_pos.y, 2));
-}
-
-Vector2d Planeta::obliczSi³yGrawitacji()
-{
-	Vector2d sumaSi³ = { 0,0 };
-	for (auto planeta : *m_tablicaObiektów)
-	{
-		if (planeta != this)
-		{
-			double wypadkowa = G_Sta³aGrawitacji * (m_masa * planeta->m_masa) / pow(odleg³oœæ(planeta), 2);
-			double alfa = atan2(planeta->m_pos.x - m_pos.x, planeta->m_pos.y - m_pos.y);
-			sumaSi³.x += wypadkowa * sin(alfa);
-			sumaSi³.y += wypadkowa * cos(alfa);
-		}
-	}
-	return sumaSi³;
-}
-
-void Planeta::obliczPozycjê(const double &czas)		//Musi byæ referencja, inaczej crash???
-{
-	if (m_zablokowana) return;
-
-	m_F = obliczSi³yGrawitacji();
-
-
-	Vector2d przysp = m_F / m_masa;			//Ca³kowanie przybli¿one trapezami, dok³adne przy sta³ym przyspieszeniu
-
-	m_pos.x += 0.5f * m_vel.x * czas;
-	m_pos.y += 0.5f * m_vel.y * czas;
-
-	m_vel += przysp * czas;
-
-	m_pos.x += 0.5f * m_vel.x * czas;
-	m_pos.y += 0.5f * m_vel.y * czas;
-
-	setPosition(static_cast<float>(m_pos.x), static_cast<float>(m_pos.y));
 }
 
 void Planeta::odœwie¿Œlad()
@@ -115,16 +78,16 @@ bool Planeta::sprawdŸKolizjê(const Planeta *a, const Planeta *b)
 	return false;
 }
 
-Planeta*  Planeta::znajdŸKolizje(const std::vector<Planeta*> &tablicaObjektów)
+Planeta*  Planeta::znajdŸKolizje(std::vector<Planeta> & tablicaObjektów)
 {
 	//Zwraca planetê koliduj¹c¹ z t¹ planet¹.
 
-	for (auto a = tablicaObjektów.begin(); a != tablicaObjektów.end(); a++)
+	for (Planeta & a : tablicaObjektów)
 	{
-		if (*a == this)
+		if (&a == this)
 			continue;
-		if (sprawdŸKolizjê(*a))
-			return *a;
+		if (sprawdŸKolizjê(&a))
+			return &a;
 	}
 
 	return nullptr;

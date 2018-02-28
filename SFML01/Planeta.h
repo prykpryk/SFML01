@@ -10,31 +10,30 @@ class Planeta : public sf::CircleShape
 {
 protected:
 
-	Vector2d m_vel;
 	Vector2d m_F;
 	double m_R;
-	std::vector<Planeta*> *m_tablicaObiektów;
 	sf::Color m_color;
-	bool m_zablokowana;
+
 
 public:
 	std::vector<sf::Vertex> m_œlad;
 	double m_masa;
 	Vector2d m_pos;
+	bool m_zablokowana;
+	Vector2d m_vel;
 
 
-
-	Planeta(std::vector<Planeta*>* tablicaObiektów, const double masa, const double r, const Vector2d pos, const Vector2d vel, const sf::Color color, bool zablokowana);
+	Planeta(const double masa, const double r, const Vector2d pos, const Vector2d vel, const sf::Color color, bool zablokowana);
 
 	~Planeta();
 
-	double odleg³oœæ(const Planeta * planeta);
+	double odleg³oœæ(const Planeta * planeta) const;
 
 	static double odleg³oœæ(const Planeta * a, const Planeta * b);
 
-	Vector2d obliczSi³yGrawitacji();
+	//Vector2d obliczSi³yGrawitacji();
 
-	virtual void obliczPozycjê(const double & czas);
+	//virtual void obliczPozycjê(const double & czas);
 
 	virtual void odœwie¿Œlad();
 
@@ -44,6 +43,6 @@ public:
 
 	static bool sprawdŸKolizjê(const Planeta * a, const Planeta * b);
 
-	Planeta * znajdŸKolizje(const std::vector<Planeta*>& tablicaObjektów);
+	Planeta * znajdŸKolizje(std::vector<Planeta>& tablicaObjektów);
 
 };

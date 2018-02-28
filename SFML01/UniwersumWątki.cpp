@@ -16,7 +16,7 @@ void Uniwersum::tFizyka()
 {
 	long long numerCyklu{ 0 };
 	sf::Clock clock;
-	sf::Clock clock2;
+	sf::Clock clock_b;		//Benchmark
 
 	while (window->isOpen())
 	{
@@ -32,36 +32,18 @@ void Uniwersum::tFizyka()
 		double czas = clock.restart().asSeconds() * m_prêdkoœæSymulacji;
 
 		mu_tObiektów.lock();		//BLOKADA TABLICY OBJEKTÓW W¥TEK FIZYKI
-		for (auto obiekt : m_tablicaObiektów)
+		for (Planeta & obiekt : m_tablicaObiektów)
 		{
-			obiekt->obliczPozycjê(czas);
+			obliczPozycjê(obiekt, czas);
 		}
-		/*
-		std::vector<Planeta*> koliduj¹ce = znajdŸKolizje();
+		
+		kolizje();
 
-		for (auto a : koliduj¹ce)
+		if (clock_b.getElapsedTime().asSeconds() > 10 && DEBUG)
 		{
-			//ZnajdŸ drug¹ planetê
-			Planeta* b = a->znajdŸKolizje(m_tablicaObiektów);
-
-			//Usuñ mniej masywn¹ lub obie
-			if (a->m_masa > b->m_masa)
-				usuñPlanetê(b);
-			else if (a->m_masa < b->m_masa)
-				usuñPlanetê(a);
-			else
-			{
-				usuñPlanetê(a);
-				usuñPlanetê(b);
-			}
-			//Dla stabilnoœci pozwól usun¹æ tylko jedn¹ planetê:
-			break;
-		}*/
-
-		mu_tObiektów.unlock();		//BLOKADA TABLICY OBJEKTÓW
-
-		if ((numerCyklu % 10000000) == 0 && DEBUG)
-			std::cout << "1e7 cykli fizyki przy " << m_tablicaObiektów.size() << " planetach zajê³o œrednio: " << clock2.restart().asMicroseconds() / 10000000.0 << " us.\n";
+			std::cout << "Pêtla fizyki trwa³a œrednio " << static_cast<double>(clock_b.restart().asMicroseconds()) / numerCyklu << " us przy " << m_tablicaObiektów.size() <<" planetach.\n";
+			numerCyklu = 0;
+		}
 
 		//std::this_thread::sleep_for(std::chrono::microseconds(5));		//Dajmy czas na odblokowanie mutexa, dla stworzenia nowych obiektów itd.
 		//jednak nie dawajmy, ten sleep dzia³a na zbyt d³ugi czas oko³o 1ms
@@ -81,28 +63,21 @@ void Uniwersum::tRysowanie()
 
 		window->clear(sf::Color::Black);
 
-
-		std::vector<Planeta> kopiaUniwersum;
-
-
 		mu_tObiektów.lock();		//Blokada tablicy objektów - w¹tek rysowania
 
-		for (Planeta* a : m_tablicaObiektów)
-		{
-			kopiaUniwersum.push_back(*a);
-		}
-
-		mu_tObiektów.unlock();
+		std::vector<Planeta> kopiaUniwersum = m_tablicaObiektów;
 
 
-		for (Planeta obiekt : kopiaUniwersum)
+
+
+		for (Planeta & obiekt : m_tablicaObiektów)
 		{
 			//Rysuj planety
 			window->draw(obiekt);
 			//Rysuj œlady
 			window->draw(&(*(obiekt.m_œlad.begin())), obiekt.m_œlad.size(), sf::LineStrip);
 		}
-
+		mu_tObiektów.unlock();
 
 		window->display();
 
@@ -112,7 +87,7 @@ void Uniwersum::tRysowanie()
 
 void Uniwersum::tŒlady()
 {
-	sf::Clock clock;
+	sf::Clock clock_B;		//Benchmark
 	long long numerCyklu{ 0 };
 
 	while (window->isOpen())
@@ -123,16 +98,19 @@ void Uniwersum::tŒlady()
 			continue;
 		}
 
-		clock.restart();
+		clock_B.restart();
 		numerCyklu++;
-		//mu_tObiektów.lock();  NajwyraŸniej nie potrzebne, po usuniêciu tego mutexa ten w¹tek nie jest bardzo blokowany przez w¹tek fizyki.
-		for (auto obiekt : m_tablicaObiektów)
+
+		mu_tObiektów.lock();  //NajwyraŸniej nie potrzebne, po usuniêciu tego mutexa ten w¹tek nie jest blokowany przez w¹tek fizyki.
+		for (Planeta & obiekt : m_tablicaObiektów)
 		{
-			obiekt->odœwie¿Œlad();
+			obiekt.odœwie¿Œlad();
 		}
-		//mu_tObiektów.unlock();
-		if ((numerCyklu % 100) == 0 && DEBUG)
-			std::cout << numerCyklu << " cykl œladów zaja³: " << clock.restart().asMicroseconds() << " us.\n";
+		mu_tObiektów.unlock();
+
+		
+		if (numerCyklu % 100 == 0 && DEBUG)
+			std::cout << "Pêtla œladów trwa³a " << clock_B.restart().asMicroseconds() << "us przy " << m_tablicaObiektów.size() << " planetach.\n";
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(30));
 	}

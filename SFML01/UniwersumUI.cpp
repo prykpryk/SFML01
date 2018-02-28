@@ -15,23 +15,24 @@ Planeta* Uniwersum::planetaKursor()
 {	//Funkcja wska¿e obiekt pod kursorem, je¿eli jest wiêcej ni¿ 1 to bêdzie to obiekt najni¿ej.
 	sf::Vector2f kursor = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 
-	for (Planeta *obiekt : m_tablicaObiektów)
+	for (Planeta & obiekt : m_tablicaObiektów)
 	{
-		sf::Vector2f œrodekPlanety = obiekt->getPosition();
+		sf::Vector2f œrodekPlanety = obiekt.getPosition();
 		float odle = odl2(kursor, œrodekPlanety);
 
-		if (odle <= obiekt->getRadius())
+		if (odle <= obiekt.getRadius())
 		{
-			return obiekt;
+			//std::cout << "Znaleziono\n";
+			return &obiekt;
 		}
 	}
-
+	//std::cout << "Nie znaleziono nic\n";
 	return nullptr;
 }
 
 void Uniwersum::usunObiektKursor()
 {
-	usuñPlanetê(planetaKursor());
+	usuñPlanetê(*planetaKursor());
 }
 
 void Uniwersum::przesuñWidokOkna(sf::Vector2f a)
@@ -103,14 +104,14 @@ void Uniwersum::zoomScroll(sf::Event &event)
 void Uniwersum::debugujPlanetê()
 {
 	if (!DEBUG) return;
-	Planeta* planeta = m_tablicaObiektów[0];
+	Planeta planeta = m_tablicaObiektów[0];
 	std::cout << "###################\n" <<
-		"Radius: " << planeta->getRadius() << "\n"
-		<< "Planeta pos: " << planeta->getPosition().x << " " << planeta->getPosition().y << "\n"
-		<< "PlanetatoPixel: " << window->mapCoordsToPixel(planeta->getPosition()).x << " " << window->mapCoordsToPixel(planeta->getPosition()).y << "\n"
+		"Radius: " << planeta.getRadius() << "\n"
+		<< "Planeta pos: " << planeta.getPosition().x << " " << planeta.getPosition().y << "\n"
+		<< "PlanetatoPixel: " << window->mapCoordsToPixel(planeta.getPosition()).x << " " << window->mapCoordsToPixel(planeta.getPosition()).y << "\n"
 		<< "Kursor: " << sf::Mouse::getPosition(*window).x << " " << sf::Mouse::getPosition(*window).y << "\n"
 		<< "Kursortocoord: " << window->mapPixelToCoords(sf::Mouse::getPosition(*window)).x << " " << window->mapPixelToCoords(sf::Mouse::getPosition(*window)).y << "\n"
-		<< "Odleg³oœæ :" << odl2(planeta->getPosition(), window->mapPixelToCoords(sf::Mouse::getPosition(*window))) << "\n"
+		<< "Odleg³oœæ :" << odl2(planeta.getPosition(), window->mapPixelToCoords(sf::Mouse::getPosition(*window))) << "\n"
 		<< window->getView().getSize().x << "\n";
 }
 
@@ -161,7 +162,7 @@ void Uniwersum::handleEvents()
 				prze³¹czPauzê();
 				break;
 			case sf::Keyboard::K:
-				znajdŸKolizje();
+				kolizje();
 				break;
 			default:
 				break;
@@ -192,9 +193,9 @@ void Uniwersum::handleEvents()
 
 void Uniwersum::odœwie¿Kszta³y()
 {
-	for (auto obiekt : m_tablicaObiektów)
+	for (Planeta & obiekt : m_tablicaObiektów)
 	{
-		obiekt->odœwie¿Kszta³t(window);
+		obiekt.odœwie¿Kszta³t(window);
 	}
 }
 
