@@ -58,7 +58,7 @@ void Uniwersum::usuñPlanetê(Planeta* planeta)
 	if (planeta == m_œledzonaPlaneta)
 		m_œledzonaPlaneta = nullptr;
 
-	//mu_tObiektów.lock();
+	mu_tObiektów.lock();
 
 	for (auto it = m_tablicaObiektów.begin(); it != m_tablicaObiektów.end(); )
 	{
@@ -68,7 +68,7 @@ void Uniwersum::usuñPlanetê(Planeta* planeta)
 			it++;
 	}
 
-	//mu_tObiektów.unlock();
+	mu_tObiektów.unlock();
 
 	for (auto it = tablicaŒladów.begin(); it != tablicaŒladów.end(); )
 	{
