@@ -22,7 +22,7 @@ Planeta* Uniwersum::dodajPlanetê(
 		static_cast<Vector2d>(pos), static_cast<Vector2d>(vel),
 		color, zablokowana);
 
-	mu_tObiektów.lock();
+	mu_tObiektów.lock();		//Blokada tablicy objektów - tworzenie planety
 	m_tablicaObiektów.push_back(ptr);
 	mu_tObiektów.unlock();
 
@@ -41,7 +41,7 @@ Planeta* Uniwersum::dodajPlanetê(
 		static_cast<Vector2d>(pos), static_cast<Vector2d>(vel),
 		color, zablokowana);
 
-	mu_tObiektów.lock();
+	mu_tObiektów.lock();		//Blokada tablicy objektów - tworzenie planety
 	m_tablicaObiektów.push_back(ptr);
 	mu_tObiektów.unlock();
 
@@ -58,6 +58,8 @@ void Uniwersum::usuñPlanetê(Planeta* planeta)
 	if (planeta == m_œledzonaPlaneta)
 		m_œledzonaPlaneta = nullptr;
 
+	//mu_tObiektów.lock();
+
 	for (auto it = m_tablicaObiektów.begin(); it != m_tablicaObiektów.end(); )
 	{
 		if (*it == planeta)
@@ -65,6 +67,8 @@ void Uniwersum::usuñPlanetê(Planeta* planeta)
 		else
 			it++;
 	}
+
+	//mu_tObiektów.unlock();
 
 	for (auto it = tablicaŒladów.begin(); it != tablicaŒladów.end(); )
 	{
@@ -75,4 +79,34 @@ void Uniwersum::usuñPlanetê(Planeta* planeta)
 	}
 
 	delete planeta;
+
+}
+
+std::vector<Planeta*>  Uniwersum::znajdŸKolizje()
+{
+	//sf::Clock clock;
+	std::vector<Planeta*> koliduj¹ce;
+
+	for (auto a = m_tablicaObiektów.begin(); a != m_tablicaObiektów.end(); a++)
+	{
+		if (std::find(koliduj¹ce.begin(), koliduj¹ce.end(), *a) != koliduj¹ce.end())
+			continue;
+
+		for (auto b = a + 1; b != m_tablicaObiektów.end(); b++)
+		{
+			if (std::find(koliduj¹ce.begin(), koliduj¹ce.end(), *b) != koliduj¹ce.end())
+				continue;
+
+			if ((*a)->sprawdŸKolizjê(*b))
+			{
+				koliduj¹ce.push_back(*a);
+				koliduj¹ce.push_back(*b);
+				break;
+			}
+		}
+	}
+
+
+	//std::cout << "Liczba koliduj¹cych planet: " << koliduj¹ce.size() << " czas obliczeñ: " << clock.restart().asMicroseconds() << "us\n";
+	return koliduj¹ce;
 }

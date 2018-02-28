@@ -44,4 +44,6 @@ public:
 
 	static bool sprawdŸKolizjê(const Planeta * a, const Planeta * b);
 
+	Planeta * znajdŸKolizje(const std::vector<Planeta*>& tablicaObjektów);
+
 };

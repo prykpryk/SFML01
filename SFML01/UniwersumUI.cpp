@@ -160,6 +160,9 @@ void Uniwersum::handleEvents()
 			case sf::Keyboard::P:
 				prze³¹czPauzê();
 				break;
+			case sf::Keyboard::K:
+				znajdŸKolizje();
+				break;
 			default:
 				break;
 			}

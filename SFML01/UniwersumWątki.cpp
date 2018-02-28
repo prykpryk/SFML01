@@ -31,12 +31,34 @@ void Uniwersum::tFizyka()
 
 		double czas = clock.restart().asSeconds() * m_prêdkoœæSymulacji;
 
-		mu_tObiektów.lock();
+		mu_tObiektów.lock();		//BLOKADA TABLICY OBJEKTÓW W¥TEK FIZYKI
 		for (auto obiekt : m_tablicaObiektów)
 		{
 			obiekt->obliczPozycjê(czas);
 		}
-		mu_tObiektów.unlock();
+		/*
+		std::vector<Planeta*> koliduj¹ce = znajdŸKolizje();
+
+		for (auto a : koliduj¹ce)
+		{
+			//ZnajdŸ drug¹ planetê
+			Planeta* b = a->znajdŸKolizje(m_tablicaObiektów);
+
+			//Usuñ mniej masywn¹ lub obie
+			if (a->m_masa > b->m_masa)
+				usuñPlanetê(b);
+			else if (a->m_masa < b->m_masa)
+				usuñPlanetê(a);
+			else
+			{
+				usuñPlanetê(a);
+				usuñPlanetê(b);
+			}
+			//Dla stabilnoœci pozwól usun¹æ tylko jedn¹ planetê:
+			break;
+		}*/
+
+		mu_tObiektów.unlock();		//BLOKADA TABLICY OBJEKTÓW
 
 		if ((numerCyklu % 10000000) == 0 && DEBUG)
 			std::cout << "1e7 cykli fizyki przy " << m_tablicaObiektów.size() << " planetach zajê³o œrednio: " << clock2.restart().asMicroseconds() / 10000000.0 << " us.\n";
@@ -56,19 +78,34 @@ void Uniwersum::tRysowanie()
 	window->setActive(true);
 	while (window->isOpen())
 	{
-		mu_tRys.lock();
+
 		window->clear(sf::Color::Black);
 
-		for (Planeta *obiekt : m_tablicaObiektów)
+
+		std::vector<Planeta> kopiaUniwersum;
+
+
+		mu_tObiektów.lock();		//Blokada tablicy objektów - w¹tek rysowania
+
+		for (Planeta* a : m_tablicaObiektów)
 		{
-			//Rysuj planety
-			window->draw(*obiekt);
-			//Rysuj œlady
-			window->draw(&(*(obiekt->m_œlad.begin())), obiekt->m_œlad.size(), sf::LineStrip);
+			kopiaUniwersum.push_back(*a);
 		}
 
+		mu_tObiektów.unlock();
+
+
+		for (Planeta obiekt : kopiaUniwersum)
+		{
+			//Rysuj planety
+			window->draw(obiekt);
+			//Rysuj œlady
+			window->draw(&(*(obiekt.m_œlad.begin())), obiekt.m_œlad.size(), sf::LineStrip);
+		}
+
+
 		window->display();
-		mu_tRys.unlock();
+
 	}
 	window->setActive(false);
 }

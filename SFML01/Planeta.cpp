@@ -114,3 +114,18 @@ bool Planeta::sprawdŸKolizjê(const Planeta *a, const Planeta *b)
 
 	return false;
 }
+
+Planeta*  Planeta::znajdŸKolizje(const std::vector<Planeta*> &tablicaObjektów)
+{
+	//Zwraca planetê koliduj¹c¹ z t¹ planet¹.
+
+	for (auto a = tablicaObjektów.begin(); a != tablicaObjektów.end(); a++)
+	{
+		if (*a == this)
+			continue;
+		if (sprawdŸKolizjê(*a))
+			return *a;
+	}
+
+	return nullptr;
+}
