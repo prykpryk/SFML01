@@ -19,7 +19,7 @@ class Uniwersum
 {
 protected:
 	std::vector	<std::vector<sf::Vertex>*>	m_tablicaŒladów;
-	std::vector<Planeta*>				m_tablicaObiektów;
+	std::vector<Planeta*>				m_tablicaObiektów;		//TODO A jakby tak po prostu wszystkie planety daæ do wektora?
 	sf::RenderWindow						*window;
 	double								m_prêdkoœæSymulacji = 1.0;
 	int									m_wybranaWielkosæ = 1;

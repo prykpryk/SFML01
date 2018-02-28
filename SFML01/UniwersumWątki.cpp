@@ -61,12 +61,10 @@ void Uniwersum::tRysowanie()
 
 		for (Planeta *obiekt : m_tablicaObiektów)
 		{
+			//Rysuj planety
 			window->draw(*obiekt);
-		}
-
-		for (std::vector<sf::Vertex> *œlad : tablicaŒladów)
-		{
-			window->draw(&(œlad->at(0)), œlad->size(), sf::LineStrip); //std::list<Vertex> - nie dzia³a
+			//Rysuj œlady
+			window->draw(&(*(obiekt->m_œlad.begin())), obiekt->m_œlad.size(), sf::LineStrip);
 		}
 
 		window->display();
