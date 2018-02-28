@@ -53,23 +53,6 @@ void Uniwersum::tFizyka()
 
 void Uniwersum::tRysowanie()
 {
-	window->clear(sf::Color::Black);
-
-	for (Planeta *obiekt : m_tablicaObiektów)
-	{
-		window->draw(*obiekt);
-	}
-
-	for (std::vector<sf::Vertex> *œlad : tablicaŒladów)
-	{
-		window->draw(&(œlad->at(0)), œlad->size(), sf::LineStrip); //std::list<Vertex> - nie dzia³a
-	}
-
-	window->display();
-}
-
-void Uniwersum::tRysowanie2()
-{
 	window->setActive(true);
 	while (window->isOpen())
 	{

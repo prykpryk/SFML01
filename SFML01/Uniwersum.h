@@ -40,8 +40,6 @@ public:
 
 	void tRysowanie();
 
-	void tRysowanie2();
-
 	void tŒlady();
 
 	Planeta * dodajPlanetê(const double masa, const double r, const Vector2d pos, const Vector2d vel, const sf::Color color, bool zablokowana = false);
