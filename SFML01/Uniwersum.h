@@ -8,7 +8,6 @@
 #include "Sta³e.h"
 
 #include "Planeta.h"
-#include "PlanetaSta³a.h"
 
 #include "ZmienneGlob.h"
 #include "f_Ró¿ne.h"
@@ -25,6 +24,9 @@ protected:
 	int									m_wybranaWielkosæ = 1;
 	Planeta								*m_œledzonaPlaneta = nullptr;
 
+	std::mutex	mu_tObiektów;
+	std::mutex	mu_tŒladów;
+	std::mutex	mu_tRys;
 
 public:
 

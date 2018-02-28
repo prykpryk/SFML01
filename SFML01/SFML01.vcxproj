@@ -307,6 +307,7 @@
   <ItemGroup>
     <ClCompile Include="f_Różne.cpp" />
     <ClCompile Include="f_UI.cpp" />
+    <ClCompile Include="Planeta.cpp" />
     <ClCompile Include="SFML01.cpp" />
     <ClCompile Include="Stałe.cpp" />
     <ClCompile Include="Uniwersum.cpp" />
