@@ -311,6 +311,8 @@
     <ClCompile Include="Stałe.cpp" />
     <ClCompile Include="Uniwersum.cpp" />
     <ClInclude Include="Uniwersum.h" />
+    <ClCompile Include="UniwersumUI.cpp" />
+    <ClCompile Include="UniwersumWątki.cpp" />
     <ClCompile Include="ZmienneGlob.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

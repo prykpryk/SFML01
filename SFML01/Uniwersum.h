@@ -66,13 +66,13 @@ public:
 
 	void debugujPlanetê();
 
-	void tHandleEvents();
+	void handleEvents();
 
 	void odœwie¿Kszta³y();
 
 	void zmieñRozmiarWidoku(int w, int h);
 
-	void tŒledŸPlanetê();
+	void œledŸPlanetê();
 
 	void ustawŒledzon¹Planetê(Planeta * planeta);
 
