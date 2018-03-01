@@ -13,6 +13,6 @@ void instrukcja()
 		", i .\t\t- zmiana szybkoœci symualcji\n\n"
 		"ŒPM\t\t- œledzenie i sterowanie planety\n"
 		"Góra i dó³\t- przyspieszenie i hamowanie\n"
-		"Lewo i prawo\t- skrêt w lewo i w prawo";
+		"Lewo i prawo\t- skrêt w lewo i w prawo\n";
 
 }
