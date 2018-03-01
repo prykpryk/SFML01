@@ -25,14 +25,13 @@ protected:
 	Planeta								*m_œledzonaPlaneta = nullptr;
 
 	std::mutex	mu_tObiektów;
-	std::mutex	mu_tŒladów;
-	std::mutex	mu_tRys;
 
 public:
 
 
 	Uniwersum(sf::RenderWindow *window) : window{ window }, m_prêdkoœæSymulacji{ 1.0 }
-	{};
+	{
+	};
 
 	~Uniwersum()
 	{};

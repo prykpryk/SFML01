@@ -36,8 +36,9 @@ void Uniwersum::tFizyka()
 		{
 			obliczPozycjê(obiekt, czas);
 		}
-		
-		kolizje();
+		mu_tObiektów.unlock();
+
+		//kolizje();
 
 		if (clock_b.getElapsedTime().asSeconds() > 10 && DEBUG)
 		{
@@ -63,21 +64,18 @@ void Uniwersum::tRysowanie()
 
 		window->clear(sf::Color::Black);
 
+
 		mu_tObiektów.lock();		//Blokada tablicy objektów - w¹tek rysowania
-
 		std::vector<Planeta> kopiaUniwersum = m_tablicaObiektów;
+		mu_tObiektów.unlock();
 
-
-
-
-		for (Planeta & obiekt : m_tablicaObiektów)
+		for (Planeta & obiekt : kopiaUniwersum)
 		{
 			//Rysuj planety
 			window->draw(obiekt);
 			//Rysuj œlady
 			window->draw(&(*(obiekt.m_œlad.begin())), obiekt.m_œlad.size(), sf::LineStrip);
 		}
-		mu_tObiektów.unlock();
 
 		window->display();
 
@@ -101,7 +99,7 @@ void Uniwersum::tŒlady()
 		clock_B.restart();
 		numerCyklu++;
 
-		mu_tObiektów.lock();  //NajwyraŸniej nie potrzebne, po usuniêciu tego mutexa ten w¹tek nie jest blokowany przez w¹tek fizyki.
+		mu_tObiektów.lock();	//TODO: Przejêcie blokady zajmuje duuu¿o czasu w tym miejscu, wymyœliæ jak¹æ alternatywê?
 		for (Planeta & obiekt : m_tablicaObiektów)
 		{
 			obiekt.odœwie¿Œlad();

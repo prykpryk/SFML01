@@ -64,7 +64,7 @@ void Uniwersum::usuñPlanetê(Planeta & planeta)
 	}
 	*/
 
-	mu_tObiektów.lock();
+	mu_tObiektów.lock();		//Blokada tablicy objektów - usuwanie planety
 
 	auto it = znajdŸIterator(planeta);
 
@@ -149,8 +149,6 @@ void Uniwersum::kolizje()
 		}
 		if (kolizja) break;
 	}
-
-	mu_tObiektów.unlock();		//BLOKADA TABLICY OBJEKTÓW
 
 	if (kolizja && a && b)
 	{

@@ -21,7 +21,6 @@ Planeta::Planeta(
 	//m_œlad.setPrimitiveType(LinesStrip);
 
 	odœwie¿Œlad();
-	tablicaŒladów.push_back(&m_œlad);
 };
 
 Planeta::~Planeta()
@@ -40,13 +39,13 @@ double Planeta::odleg³oœæ(const Planeta *a, const Planeta *b)
 
 void Planeta::odœwie¿Œlad()
 {
-	mu_tŒladów.lock();
+	//mu_tŒladów.lock();
 	m_œlad.push_back(sf::Vertex(static_cast<sf::Vector2f>(m_pos), m_color));
 
 	if (m_œlad.size() > G_D£UGOŒÆ_ŒLADU)
 		m_œlad.erase(m_œlad.begin());
 
-	mu_tŒladów.unlock();
+	//mu_tŒladów.unlock();
 }
 
 void Planeta::odœwie¿Kszta³t(sf::RenderWindow *window)
