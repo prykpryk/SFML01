@@ -105,22 +105,53 @@ Vector2d Uniwersum::obliczSi³yGrawitacji(const Planeta &a)
 	return sumaSi³;
 }
 
+Vector2d Uniwersum::obliczSi³yNapêdu(const Planeta &a)
+{
+	//Ci¹g w uk³adzie odniesienia "statku"
+	Vector2d wektorCi¹gu = { 0,0 };		// +x - prograde; -x - retrograde; +y - w prawo; -y - w lewo
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		wektorCi¹gu.x += 1;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		wektorCi¹gu.x -= 1;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		wektorCi¹gu.y -= 1;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		wektorCi¹gu.y += 1;
+
+	Vector2d vel = a.m_vel;
+
+	if (vel == Vector2d(0, 0))
+		return Vector2d(0, 0);
+
+	double kurs = atan2(vel.y, vel.x);
+
+	Vector2d wektorCi¹gu_t(0, 0);
+
+	wektorCi¹gu_t.x = cos(kurs) * wektorCi¹gu.x - sin(kurs) * wektorCi¹gu.y;
+	wektorCi¹gu_t.y = sin(kurs) * wektorCi¹gu.x + cos(kurs) * wektorCi¹gu.y;
+
+	return wektorCi¹gu_t * a.m_masa * 3.0;
+}
+
 void Uniwersum::obliczPozycjê(Planeta &planeta, const double &czas)		//Musi byæ referencja, inaczej crash???
 {
 	if (planeta.m_zablokowana) return;
 
 	Vector2d m_F = obliczSi³yGrawitacji(planeta);
 
+	if (&planeta == m_œledzonaPlaneta)
+		m_F += obliczSi³yNapêdu(planeta);
 
 	Vector2d przysp = m_F / planeta.m_masa;			//Ca³kowanie przybli¿one trapezami, dok³adne przy sta³ym przyspieszeniu
 
-	planeta.m_pos.x += 0.5f * planeta.m_vel.x * czas;
-	planeta.m_pos.y += 0.5f * planeta.m_vel.y * czas;
+	planeta.m_pos.x += 0.5 * planeta.m_vel.x * czas;
+	planeta.m_pos.y += 0.5 * planeta.m_vel.y * czas;
 
 	planeta.m_vel += przysp * czas;
 
-	planeta.m_pos.x += 0.5f * planeta.m_vel.x * czas;
-	planeta.m_pos.y += 0.5f * planeta.m_vel.y * czas;
+	planeta.m_pos.x += 0.5 * planeta.m_vel.x * czas;
+	planeta.m_pos.y += 0.5 * planeta.m_vel.y * czas;
 
 	planeta.setPosition(static_cast<float>(planeta.m_pos.x), static_cast<float>(planeta.m_pos.y));
 }

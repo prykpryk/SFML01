@@ -81,6 +81,8 @@ public:
 
 	Vector2d obliczSi³yGrawitacji(const Planeta & planeta);
 
+	Vector2d obliczSi³yNapêdu(const Planeta & a);
+
 	void obliczPozycjê(Planeta & planeta, const double & czas);
 
 	void ustawŒledzon¹PlanetêKursor();
