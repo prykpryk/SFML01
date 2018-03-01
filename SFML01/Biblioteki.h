@@ -11,4 +11,3 @@
 #include <chrono>
 #include <clocale>
 #include <list>
-#include <algorithm>

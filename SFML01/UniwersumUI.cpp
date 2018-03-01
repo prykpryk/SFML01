@@ -82,13 +82,12 @@ void Uniwersum::zoomScroll(sf::Event &event)
 	sf::Vector2f kursorCoord = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 	sf::Vector2f œrodek = view.getCenter();
 
-	float zmianaSkali = -G_ZOOM_SENS * event.mouseWheelScroll.x;
+	float zmianaSkali = -(event.mouseWheelScroll.delta);
 
-	if (zmianaSkali > G_ZOOM_MAXSPEED)
+	if (zmianaSkali > G_ZOOM_MAXSPEED)		//Mo¿na zast¹piæ przez std::clamp
 		zmianaSkali = G_ZOOM_MAXSPEED;
-
-	if (event.mouseWheelScroll.delta < 0)
-		zmianaSkali = -zmianaSkali;
+	else if (zmianaSkali < -G_ZOOM_MAXSPEED)
+		zmianaSkali = -G_ZOOM_MAXSPEED;
 
 	œrodek -= zmianaSkali * (kursorCoord - œrodek);
 
@@ -98,7 +97,6 @@ void Uniwersum::zoomScroll(sf::Event &event)
 	window->setView(view);
 
 	odœwie¿Kszta³y();
-
 }
 
 void Uniwersum::debugujPlanetê()
