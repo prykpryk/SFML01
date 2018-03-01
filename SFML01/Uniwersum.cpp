@@ -135,6 +135,9 @@ void Uniwersum::kolizje()
 	//Flaga wyst¹pienia kolizji
 	bool kolizja{ false };
 
+	mu_tObiektów.lock();		//Blokada tablicy objektów - funkcja kolizji
+
+
 	for (auto it_a = m_tablicaObiektów.begin(); it_a != m_tablicaObiektów.end(); it_a++)
 	{
 		for (auto it_b = it_a + 1; it_b != m_tablicaObiektów.end(); it_b++)
@@ -149,6 +152,9 @@ void Uniwersum::kolizje()
 		}
 		if (kolizja) break;
 	}
+
+	mu_tObiektów.unlock();		//Teoretycznie trzeba odblokowaæ dopiero po porównaniu mas
+								//Bêdzie krasz je¿eli w tym momencie zostanie usuniêta jakaœ planeta
 
 	if (kolizja && a && b)
 	{

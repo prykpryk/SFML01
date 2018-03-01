@@ -79,6 +79,8 @@ void Uniwersum::tRysowanie()
 
 		window->display();
 
+		kolizje();
+
 	}
 	window->setActive(false);
 }
