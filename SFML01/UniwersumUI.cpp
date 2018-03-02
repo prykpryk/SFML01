@@ -210,6 +210,17 @@ void Uniwersum::zmieñRozmiarWidoku(int w, int h)
 	odœwie¿Kszta³y();
 }
 
+void Uniwersum::zoomujWidoku(float x)
+{
+	sf::View view = window->getView();
+
+	view.zoom(x);
+
+	window->setView(view);
+
+	odœwie¿Kszta³y();
+}
+
 void Uniwersum::œledŸPlanetê()
 {
 	if (m_œledzonaPlaneta == nullptr) return;

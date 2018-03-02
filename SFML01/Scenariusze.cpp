@@ -20,8 +20,9 @@ void scen_2S³oñca1Planeta(Uniwersum & uni)			//xDDDDDDDDDDDD
 	uni.dodajPlanetê(1000, 5, { -50, 0 }, { 0,0 }, sf::Color::Yellow, true);
 	uni.dodajPlanetê(1000, 5, { 50, 0 }, { 0,0 }, sf::Color::Yellow, true);
 	uni.dodajPlanetê(10, { 0, 0 }, { 7.35, 9 }, sf::Color::Red, false);
-	uni.dodajPlanetê(0.1, { 0, 100 }, { 9, 0 }, sf::Color::Blue, false);
+	uni.dodajPlanetê(0.1, { 0, 100 }, { 9, 0 }, sf::Color::Cyan, false);
 	uni.dodajPlanetê(0.1, { -50, 8 }, { 24, 0 }, sf::Color::White, false);
+
 }
 
 void scen_Uk³Binarny(Uniwersum & uni)
@@ -32,13 +33,16 @@ void scen_Uk³Binarny(Uniwersum & uni)
 	uni.dodajPlanetê(1000, { 3000, 0 }, { 0, -57 }, sf::Color::White);
 	uni.dodajPlanetê(1, { 3020, 0 }, { 0, -74 }, sf::Color::Green);
 	uni.dodajPlanetê(0.1, { 800, 0 }, { 0, -120 }, sf::Color::Red);
+
+	uni.zoomujWidoku(10.0f);
+
 }
 
 
 void scen_du¿oPlanetekRównomiernie(Uniwersum & uni)
 {
 	float masaS³oñca = 1000;
-	uni.dodajPlanetê(masaS³oñca, { 0,0 }, { 0,0 }, sf::Color::Blue, true);				//S³oñce
+	uni.dodajPlanetê(masaS³oñca, { 0,0 }, { 0,0 }, sf::Color::Cyan, true);				//S³oñce
 
 	for (int i = 0; i < 20; i++)
 	{
@@ -51,7 +55,7 @@ void scen_du¿oPlanetekRównomiernie(Uniwersum & uni)
 void scen_du¿oPlanetek(Uniwersum & uni)
 {
 	float masaS³oñca = 1000;
-	uni.dodajPlanetê(masaS³oñca, { 0,0 }, { 0,0 }, sf::Color::Blue, true);				//S³oñce
+	uni.dodajPlanetê(masaS³oñca, { 0,0 }, { 0,0 }, sf::Color::Cyan, true);				//S³oñce
 
 	for (int i = 0; i < 10; i++)
 	{

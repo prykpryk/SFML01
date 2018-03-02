@@ -74,6 +74,8 @@ public:
 
 	void zmieñRozmiarWidoku(int w, int h);
 
+	void zoomujWidoku(float x);
+
 	void œledŸPlanetê();
 
 	void ustawŒledzon¹Planetê(Planeta * planeta);
