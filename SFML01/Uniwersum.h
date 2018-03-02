@@ -37,6 +37,8 @@ public:
 	{};
 
 
+	void little_sleep(std::chrono::microseconds us);
+
 	void tFizyka();
 
 	void tRysowanie();

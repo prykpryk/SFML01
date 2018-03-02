@@ -12,6 +12,15 @@
 #include "f_Ró¿ne.h"
 
 
+void Uniwersum::little_sleep(std::chrono::microseconds us)
+{
+	auto start = std::chrono::high_resolution_clock::now();
+	auto end = start + us;
+	do {
+		std::this_thread::yield();
+	} while (std::chrono::high_resolution_clock::now() < end);
+}
+
 void Uniwersum::tFizyka()
 {
 	long long numerCyklu{ 0 };
@@ -22,7 +31,7 @@ void Uniwersum::tFizyka()
 	{
 		if (m_prêdkoœæSymulacji <= 0)
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			std::this_thread::sleep_for(std::chrono::milliseconds(30));
 			clock.restart();
 			continue;
 		}
@@ -40,13 +49,13 @@ void Uniwersum::tFizyka()
 
 		//kolizje();
 
-		if (clock_b.getElapsedTime().asSeconds() > 10 && DEBUG)
+		if (clock_b.getElapsedTime().asSeconds() > 5 && DEBUG)
 		{
-			std::cout << "Pêtla fizyki trwa³a œrednio " << static_cast<double>(clock_b.restart().asMicroseconds()) / numerCyklu << " us przy " << m_tablicaObiektów.size() <<" planetach.\n";
+			std::cout << numerCyklu << "pêtli fizyki trwa³o œrednio " << static_cast<double>(clock_b.restart().asMicroseconds()) / numerCyklu << " us przy " << m_tablicaObiektów.size() <<" planetach.\n";
 			numerCyklu = 0;
 		}
 
-		//std::this_thread::sleep_for(std::chrono::microseconds(5));		//Dajmy czas na odblokowanie mutexa, dla stworzenia nowych obiektów itd.
+		little_sleep(std::chrono::microseconds(5));		//Dajmy czas na odblokowanie mutexa, dla stworzenia nowych obiektów itd.
 		//jednak nie dawajmy, ten sleep dzia³a na zbyt d³ugi czas oko³o 1ms
 
 		//Benchmark w konf. DEBUG
@@ -59,11 +68,15 @@ void Uniwersum::tFizyka()
 void Uniwersum::tRysowanie()
 {
 	window->setActive(true);
+	long long numerCyklu{ 0 };
+
+	sf::Clock clock_b;		//Benchmark
 	while (window->isOpen())
 	{
-
+		numerCyklu++;
+		clock_b.restart();
 		window->clear(sf::Color::Black);
-
+		
 
 		mu_tObiektów.lock();		//Blokada tablicy objektów - w¹tek rysowania
 		std::vector<Planeta> kopiaUniwersum = m_tablicaObiektów;
@@ -80,6 +93,12 @@ void Uniwersum::tRysowanie()
 		window->display();
 
 		kolizje();
+
+		if (numerCyklu % 1000 == 0 && DEBUG)
+		{
+			std::cout << "Pêtla rysowania trwa³a " << static_cast<double>(clock_b.restart().asMilliseconds()) << " ms przy " << m_tablicaObiektów.size() << " planetach.\n";
+			numerCyklu = 0;
+		}
 
 	}
 	window->setActive(false);
