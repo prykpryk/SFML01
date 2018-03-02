@@ -320,6 +320,9 @@
     <ClCompile Include="UniwersumWątki.cpp" />
     <ClCompile Include="ZmienneGlob.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="consola.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
