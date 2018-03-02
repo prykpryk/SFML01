@@ -9,6 +9,7 @@
 #include "Uniwersum.h"
 #include "ZmienneGlob.h"
 #include "f_Ró¿ne.h"
+#include "GUI.h"
 
 Planeta* Uniwersum::dodajPlanetê(
 	const double masa,

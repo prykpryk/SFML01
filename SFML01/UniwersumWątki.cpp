@@ -10,6 +10,7 @@
 #include "Uniwersum.h"
 #include "ZmienneGlob.h"
 #include "f_Ró¿ne.h"
+#include "GUI.h"
 
 
 void Uniwersum::little_sleep(std::chrono::microseconds us)
@@ -23,7 +24,6 @@ void Uniwersum::little_sleep(std::chrono::microseconds us)
 
 void Uniwersum::tFizyka()
 {
-	long long numerCyklu{ 0 };
 	sf::Clock clock;
 	sf::Clock clock_b;		//Benchmark
 
@@ -36,8 +36,6 @@ void Uniwersum::tFizyka()
 			continue;
 		}
 
-		numerCyklu++;
-
 		double czas = clock.restart().asSeconds() * m_prêdkoœæSymulacji;
 
 		mu_tObiektów.lock();		//BLOKADA TABLICY OBJEKTÓW W¥TEK FIZYKI
@@ -45,23 +43,20 @@ void Uniwersum::tFizyka()
 		{
 			obliczPozycjê(obiekt, czas);
 		}
+		m_numerCykluFizyki++;
+
 		mu_tObiektów.unlock();
+
+
 
 		//kolizje();
 
-		if (clock_b.getElapsedTime().asSeconds() > 5 && DEBUG)
-		{
-			std::cout << numerCyklu << "pêtli fizyki trwa³o œrednio " << static_cast<double>(clock_b.restart().asMicroseconds()) / numerCyklu << " us przy " << m_tablicaObiektów.size() <<" planetach.\n";
-			numerCyklu = 0;
-		}
+		//if (clock_b.getElapsedTime().asSeconds() > 5 && DEBUG)
+		//{
+		//	std::cout << m_numerCykluFizyki << "pêtli fizyki trwa³o œrednio " << static_cast<double>(clock_b.restart().asMicroseconds()) / m_numerCykluFizyki << " us przy " << m_tablicaObiektów.size() <<" planetach.\n";
+		//}
 
-		little_sleep(std::chrono::microseconds(5));		//Dajmy czas na odblokowanie mutexa, dla stworzenia nowych obiektów itd.
-		//jednak nie dawajmy, ten sleep dzia³a na zbyt d³ugi czas oko³o 1ms
-
-		//Benchmark w konf. DEBUG
-		//Kopiowanie tablicy:	3 obj - 7.4us, 10 obj - 28.3us		Zaleta: mutex odblokowany po skopiowaniu tablicy (po ok 5us), te¿ niestabilne jak kop. co 10
-		//Bez kopiowania:		3 obj - 2.4us, 10 obj - 23us		Zaleta: dla 3 obj jest 3 razy szybciej, stabilne
-		//Kop. tab. co 10 cykli: jak bez kopiowania					Wada: Niestabilne, nie wiadomo czy obiekt nie zosta³ usuniêty.
+		little_sleep(std::chrono::microseconds(2));
 	}
 }
 
@@ -70,13 +65,15 @@ void Uniwersum::tRysowanie()
 	window->setActive(true);
 	long long numerCyklu{ 0 };
 
+
 	sf::Clock clock_b;		//Benchmark
 	while (window->isOpen())
 	{
 		numerCyklu++;
 		clock_b.restart();
+		odœwie¿Czas(m_numerCykluFizyki,m_prêdkoœæSymulacji);
+
 		window->clear(sf::Color::Black);
-		
 
 		mu_tObiektów.lock();		//Blokada tablicy objektów - w¹tek rysowania
 		std::vector<Planeta> kopiaUniwersum = m_tablicaObiektów;
@@ -89,6 +86,8 @@ void Uniwersum::tRysowanie()
 			//Rysuj œlady
 			window->draw(&(*(obiekt.m_œlad.begin())), obiekt.m_œlad.size(), sf::LineStrip);
 		}
+
+		drawCzas(*window);
 
 		window->display();
 

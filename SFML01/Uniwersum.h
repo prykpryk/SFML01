@@ -12,9 +12,10 @@
 #include "ZmienneGlob.h"
 #include "f_Ró¿ne.h"
 #include "f_UI.h"
+#include "GUI.h"
 
 
-class Uniwersum
+class Uniwersum : GUI
 {
 protected:
 	//std::vector	<std::vector<sf::Vertex>>	m_tablicaŒladów;
@@ -23,13 +24,13 @@ protected:
 	double								m_prêdkoœæSymulacji = 1.0;
 	int									m_wybranaWielkosæ = 1;
 	Planeta								*m_œledzonaPlaneta = nullptr;
-
+	unsigned long long					m_numerCykluFizyki = 0;
 	std::mutex	mu_tObiektów;
 
 public:
 
 
-	Uniwersum(sf::RenderWindow *window) : window{ window }, m_prêdkoœæSymulacji{ 1.0 }
+	Uniwersum(sf::RenderWindow *window) : GUI(window), window{ window }, m_prêdkoœæSymulacji{ 1.0 }
 	{
 	};
 
