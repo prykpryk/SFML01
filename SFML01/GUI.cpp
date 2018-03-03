@@ -8,11 +8,11 @@
 
 GUI::GUI(sf::RenderWindow * window) : m_window{ window }
 {
-	m_czas = dodajTekst("consola.ttf");
+	m_czas = dodajTekst("tahoma.ttf");
 };
 
 
-void GUI::odœwie¿Czas(unsigned long long tick, double prêdkoœæSymulacji)
+void GUI::odœwie¿Czas(unsigned long long tick, double prêdkoœæSymulacji, int liczba_planet)
 {
 	//Okreœlanie tekstu, fps
 	static sf::Clock clock;
@@ -33,10 +33,12 @@ void GUI::odœwie¿Czas(unsigned long long tick, double prêdkoœæSymulacji)
 		czas.append(L"\nIloœæ wskaŸników na zegar: ");
 		czas.append(std::to_wstring(m_czas.use_count()));
 	}
+	czas.append(L"\nLiczba planet: ");
+	czas.append(std::to_wstring(liczba_planet));
 	m_czas->setString(czas);
 
 	//Skalowanie tekstu
-	m_czas->skalujTekst(m_window, { 0.0f ,0.0f }, {0.4f, 0.1f});
+	m_czas->skalujTekst(m_window, { 0.0f ,0.0f }, {0.2f, 0.2f}, true, true);
 
 }
 

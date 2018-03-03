@@ -14,5 +14,6 @@ public:
 	Tekst(std::string fontPath);
 
 	void zmieñTekst(sf::String & string);
-	void skalujTekst(sf::RenderWindow * window, sf::Vector2f zadanaPozycja, sf::Vector2f zadaneProporcja);
+	void skalujTekst(sf::RenderWindow* window, sf::Vector2f zadanaPozycja, sf::Vector2f zadaneProporcja, bool sta³y_rozmiar = 1, bool wyrównaj_skale = 0);
+
 };

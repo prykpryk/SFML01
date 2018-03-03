@@ -57,7 +57,7 @@ void Uniwersum::tRysowanie()
 	{
 		numerCyklu++;
 		clock_b.restart();
-		odœwie¿Czas(m_numerCykluFizyki,m_prêdkoœæSymulacji);
+		odœwie¿Czas(m_numerCykluFizyki,m_prêdkoœæSymulacji, m_tablicaObiektów.size());
 
 		window->clear(sf::Color::Black);
 
