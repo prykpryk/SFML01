@@ -24,37 +24,23 @@ void Uniwersum::little_sleep(std::chrono::microseconds us)
 
 void Uniwersum::tFizyka()
 {
-	sf::Clock clock;
-	sf::Clock clock_b;		//Benchmark
 
 	while (window->isOpen())
 	{
 		if (m_prêdkoœæSymulacji <= 0)
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(30));
-			clock.restart();
 			continue;
 		}
-
-		double czas = clock.restart().asSeconds() * m_prêdkoœæSymulacji;
 
 		mu_tObiektów.lock();		//BLOKADA TABLICY OBJEKTÓW W¥TEK FIZYKI
 		for (Planeta & obiekt : m_tablicaObiektów)
 		{
-			obliczPozycjê(obiekt, czas);
+			obliczPozycjê(obiekt, G_PodstawaCzasu * m_prêdkoœæSymulacji);
 		}
 		m_numerCykluFizyki++;
 
 		mu_tObiektów.unlock();
-
-
-
-		//kolizje();
-
-		//if (clock_b.getElapsedTime().asSeconds() > 5 && DEBUG)
-		//{
-		//	std::cout << m_numerCykluFizyki << "pêtli fizyki trwa³o œrednio " << static_cast<double>(clock_b.restart().asMicroseconds()) / m_numerCykluFizyki << " us przy " << m_tablicaObiektów.size() <<" planetach.\n";
-		//}
 
 		little_sleep(std::chrono::microseconds(2));
 	}
@@ -65,8 +51,8 @@ void Uniwersum::tRysowanie()
 	window->setActive(true);
 	long long numerCyklu{ 0 };
 
-
 	sf::Clock clock_b;		//Benchmark
+
 	while (window->isOpen())
 	{
 		numerCyklu++;
@@ -87,7 +73,7 @@ void Uniwersum::tRysowanie()
 			window->draw(&(*(obiekt.m_œlad.begin())), obiekt.m_œlad.size(), sf::LineStrip);
 		}
 
-		drawCzas(*window);
+		draw(*window,sf::RenderStates::Default);
 
 		window->display();
 

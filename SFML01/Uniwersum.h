@@ -68,6 +68,8 @@ public:
 
 	void debugujPlanetê();
 
+	void debugujKursor();
+
 	void handleEvents();
 
 	void odœwie¿Kszta³y();

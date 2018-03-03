@@ -1,42 +1,58 @@
 #pragma once
 
+#include "Definicje.h"
 #include "Biblioteki.h"
 #include "GUI.h"
+#include "GUI_text.h"
+#include "Sta³e.h"
 
 GUI::GUI(sf::RenderWindow * window) : m_window{ window }
 {
-	if (!fConsolas.loadFromFile("consola.ttf"))
-	{
-		// error...
-	}
-
-	tCzas.setFont(fConsolas);
-	tCzas.setString("XDXDXD");
-	tCzas.setCharacterSize(72);
-	tCzas.setFillColor(sf::Color::White);
-	tCzas.setStyle(sf::Text::Regular);
-	tCzas.setScale(0.2f, 0.2f);
-	tCzas.setPosition(100, 0);
-
+	m_czas = dodajTekst("consola.ttf");
 };
 
-void GUI::drawCzas(sf::RenderWindow & window)
-{
-	window.draw(tCzas);
-}
 
 void GUI::odœwie¿Czas(unsigned long long tick, double prêdkoœæSymulacji)
 {
-	std::wstring czas = L"Cykli: ";
-	czas.append(std::to_wstring(tick));
+	//Okreœlanie tekstu, fps
+	static sf::Clock clock;
+	static long long ostatni_tick = -1;
+	static int fps = 0;
+	if (clock.getElapsedTime().asSeconds() > 1.0f)
+	{
+		fps = static_cast<int>(floor((tick - ostatni_tick) / clock.restart().asSeconds()));
+		ostatni_tick = tick;
+	}
+	std::wstring czas = L"Fiz FPS: ";
+	czas.append(std::to_wstring(fps));
 	czas.append(L"\nKrok czasu: ");
-	czas.append(std::to_wstring(prêdkoœæSymulacji/1000.0));
+	czas.append(std::to_wstring(prêdkoœæSymulacji * G_PodstawaCzasu * 1000));
 	czas.append(L" ms");
+	if (DEBUG)
+	{
+		czas.append(L"\nIloœæ wskaŸników na zegar: ");
+		czas.append(std::to_wstring(m_czas.use_count()));
+	}
+	m_czas->setString(czas);
 
-	sf::View view = m_window->getView();
+	//Skalowanie tekstu
+	m_czas->skalujTekst(m_window, { 0.0f ,0.0f }, {0.4f, 0.1f});
 
-	tCzas.setPosition(m_window->mapPixelToCoords({ 0,0 }, view));
-	tCzas.setString(czas);
-	tCzas.setScale(sf::Vector2f(1.5f, 1.5f) * m_window->getView().getSize().x / 4000.0f);
+}
+
+
+void GUI::draw(sf::RenderTarget & target, sf::RenderStates states) const
+{
+	for (auto i : m_rysowalneGUI)
+	{
+		target.draw(*i);
+	}
+}
+
+std::shared_ptr<Tekst> GUI::dodajTekst(std::string fontPath)
+{
+	std::shared_ptr<Tekst> ptr = std::make_shared<Tekst>(fontPath);
+	m_rysowalneGUI.push_back(ptr);
+	return ptr;
 }
 

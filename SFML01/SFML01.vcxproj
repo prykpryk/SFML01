@@ -300,6 +300,7 @@
     <ClInclude Include="f_Różne.h" />
     <ClInclude Include="f_UI.h" />
     <ClInclude Include="GUI.h" />
+    <ClInclude Include="GUI_text.h" />
     <ClInclude Include="Planeta.h" />
     <ClInclude Include="Scenariusze.h" />
     <ClInclude Include="Stałe.h" />
@@ -310,6 +311,7 @@
     <ClCompile Include="f_Różne.cpp" />
     <ClCompile Include="f_UI.cpp" />
     <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="GUI_text.cpp" />
     <ClCompile Include="Planeta.cpp" />
     <ClCompile Include="Scenariusze.cpp" />
     <ClCompile Include="SFML01.cpp" />

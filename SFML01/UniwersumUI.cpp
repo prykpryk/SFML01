@@ -113,6 +113,21 @@ void Uniwersum::debugujPlanetê()
 		<< window->getView().getSize().x << "\n";
 }
 
+void Uniwersum::debugujKursor()
+{
+	if (!DEBUG) return;
+	sf::Vector2i mouse = sf::Mouse::getPosition(*window);
+	sf::Vector2f pixel = window->mapPixelToCoords(mouse);
+	sf::Vector2u windowSize = window->getSize();
+
+	std::cout << "###################\n"
+		<< "Kursor - " << mouse.x << " " << mouse.y << "\n"
+		<< "Kursor - coords: " << pixel.x << " " << pixel.y << "\n"
+		<< "Rozmiar okna: " << windowSize.x << " " << windowSize.y << "\n";
+
+}
+
+
 void Uniwersum::handleEvents()
 {
 	sf::Event event;
@@ -155,6 +170,9 @@ void Uniwersum::handleEvents()
 				break;
 			case sf::Keyboard::D:
 				debugujPlanetê();
+				break;
+			case sf::Keyboard::K:
+				debugujKursor();
 				break;
 			case sf::Keyboard::P:
 				prze³¹czPauzê();
