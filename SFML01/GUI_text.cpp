@@ -1,9 +1,30 @@
 #include "GUI_text.h"
 #include "Sta³e.h"
 
+
+
 Tekst::Tekst(std::string fontPath)
 {
 	if (!m_font.loadFromFile(fontPath))
+	{
+		throw L"Nie uda³o siê za³adowaæ pliku czcionki";
+	}
+
+	setFont(m_font);
+
+	setString("test");
+	setCharacterSize(72);
+	setFillColor(sf::Color::White);
+	setStyle(sf::Text::Regular);
+	setScale(0.2f, 0.2f);
+	setPosition(100, 0);
+
+}
+
+Tekst::Tekst(const unsigned char fontHex[], const unsigned int length)
+{
+
+	if (!m_font.loadFromMemory(fontHex, length))
 	{
 		throw L"Nie uda³o siê za³adowaæ pliku czcionki";
 	}

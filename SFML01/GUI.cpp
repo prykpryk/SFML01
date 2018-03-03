@@ -6,9 +6,12 @@
 #include "GUI_text.h"
 #include "Sta³e.h"
 
+#include "font_tahoma.h"
+
 GUI::GUI(sf::RenderWindow * window) : m_window{ window }
 {
-	m_czas = dodajTekst("tahoma.ttf");
+	//m_czas = dodajTekst("tahoma.ttf");
+	m_czas = dodajTekst(tahoma_ttf, tahoma_ttf_len);
 };
 
 
@@ -58,3 +61,9 @@ std::shared_ptr<Tekst> GUI::dodajTekst(std::string fontPath)
 	return ptr;
 }
 
+std::shared_ptr<Tekst> GUI::dodajTekst(const unsigned char fontHex[], const unsigned int length)
+{
+	std::shared_ptr<Tekst> ptr = std::make_shared<Tekst>(fontHex, length);
+	m_rysowalneGUI.push_back(ptr);
+	return ptr;
+}

@@ -297,6 +297,7 @@
   <ItemGroup>
     <ClInclude Include="Biblioteki.h" />
     <ClInclude Include="Definicje.h" />
+    <ClInclude Include="font_tahoma.h" />
     <ClInclude Include="f_Różne.h" />
     <ClInclude Include="f_UI.h" />
     <ClInclude Include="GUI.h" />

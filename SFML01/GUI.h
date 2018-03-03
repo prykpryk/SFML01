@@ -23,4 +23,8 @@ public:
 
 	std::shared_ptr<Tekst> dodajTekst(std::string fontPath);
 
+	std::shared_ptr<Tekst> dodajTekst(const unsigned char fontHex[], const unsigned int length);
+
+	std::shared_ptr<Tekst> dodajTekst(const char fontHex[], const unsigned int length);
+
 };
